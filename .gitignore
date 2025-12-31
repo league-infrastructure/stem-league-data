@@ -21,3 +21,6 @@ Thumbs.db
 npm-debug.log*
 
 /src/generated/prisma
+
+.env
+*.agekey

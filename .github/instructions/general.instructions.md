@@ -21,7 +21,6 @@ We are building a data service with PostgreSQL as the only database, using a dis
 * Schema diagrams: Mermaid ER, generated from SQLAlchemy models or the live database
 
 
-
 ## LLM Agent Updates
 
 As you implement an update, you should create a dev test in `tests/dev` to
@@ -41,4 +40,4 @@ Always run your programs with `uv run`
 
 ## Configuration
 
-We store secrets in `secrets/` using `git crypt`
+We store secrets in `secrets/` using `SOPS + age`. See (our SOPS+age wiki page)[https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age] for details on how to manage secrets
