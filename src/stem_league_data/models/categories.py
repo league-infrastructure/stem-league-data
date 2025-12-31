@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, String, Text
+from sqlalchemy import ForeignKey, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from stem_league_data.models.base import Base, TimestampMixin
@@ -19,13 +19,20 @@ class Group(Base, TimestampMixin):
     """
 
     __tablename__ = "groups"
+    __table_args__ = (
+        UniqueConstraint("slug", "group_type", name="uq_groups_slug_group_type"),
+    )
 
-    slug: Mapped[str] = mapped_column(String(100), primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    
+    slug: Mapped[str] = mapped_column(String(100), nullable=False)
+    group_type: Mapped[str] = mapped_column(String(50), nullable=False)  # discriminator
+    
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     blurb: Mapped[str | None] = mapped_column(Text)
     where: Mapped[str | None] = mapped_column(String(255))
     color: Mapped[str | None] = mapped_column(String(50))
-    group_type: Mapped[str] = mapped_column(String(50), nullable=False)  # discriminator
+
 
     org_id: Mapped[int | None] = mapped_column(ForeignKey("orgs.id", ondelete="SET NULL"))
 

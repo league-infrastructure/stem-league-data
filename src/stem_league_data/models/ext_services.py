@@ -13,7 +13,8 @@ class Meetup(Base, TimestampMixin):
 
     __tablename__ = "meetups"
 
-    slug: Mapped[str] = mapped_column(String(255), primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    slug: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     meetup_slug: Mapped[str | None] = mapped_column(String(255))
     group: Mapped[str | None] = mapped_column(String(255))
     subgroup: Mapped[str | None] = mapped_column(String(255))

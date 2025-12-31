@@ -1,8 +1,10 @@
 """Generate ER diagrams grouped by module."""
 
+import re
 from pathlib import Path
 
 from eralchemy2 import render_er
+from eralchemy2.main import all_to_intermediary, get_output_mode
 from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey
 
 from stem_league_data.models import Base
@@ -129,6 +131,44 @@ def create_group_metadata(group_name: str, group_config: dict) -> MetaData:
     return group_metadata
 
 
+def render_er_with_stub_styling(metadata: MetaData, output_path: str, stub_tables: list[str]):
+    """Render ER diagram with stub tables styled differently."""
+    import subprocess
+    import tempfile
+    from eralchemy2.main import _intermediary_to_dot, metadata_to_intermediary
+    
+    # Get intermediary representation
+    tables, relationships = metadata_to_intermediary(metadata)
+    
+    # Convert to DOT format (use internal function that returns string)
+    dot_content = _intermediary_to_dot(tables, relationships)
+    
+    # Modify stub table styling in the DOT content
+    for table_name in stub_tables:
+        # Change the header row to have a gray background
+        # Original: <TR><TD><B><FONT POINT-SIZE="16">table_name</FONT></B></TD></TR>
+        # New: <TR><TD BGCOLOR="#888888"><B><FONT COLOR="white" POINT-SIZE="16">table_name (stub)</FONT></B></TD></TR>
+        dot_content = dot_content.replace(
+            f'<TR><TD><B><FONT POINT-SIZE="16">{table_name}</FONT></B></TD></TR>',
+            f'<TR><TD BGCOLOR="#888888"><B><FONT COLOR="white" POINT-SIZE="16">{table_name} (stub)</FONT></B></TD></TR>'
+        )
+    
+    # Write to temp file and render with dot
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.dot', delete=False) as f:
+        f.write(dot_content)
+        dot_file = f.name
+    
+    try:
+        subprocess.run(
+            ['dot', '-Tpng', '-o', output_path, dot_file],
+            check=True,
+            capture_output=True
+        )
+    finally:
+        import os
+        os.unlink(dot_file)
+
+
 def generate_group_diagrams(output_dir: Path):
     """Generate ER diagrams for each group."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -138,15 +178,21 @@ def generate_group_diagrams(output_dir: Path):
         
         try:
             group_metadata = create_group_metadata(group_name, group_config)
+            stub_tables = group_config.get("stubs", [])
             
             # Generate PNG only
             png_path = output_dir / f"er-{group_name}.png"
             
-            render_er(group_metadata, str(png_path))
+            if stub_tables:
+                render_er_with_stub_styling(group_metadata, str(png_path), stub_tables)
+            else:
+                render_er(group_metadata, str(png_path))
             
             print(f"  Generated {png_path.name}")
         except Exception as e:
             print(f"  Error generating {group_name}: {e}")
+            import traceback
+            traceback.print_exc()
 
     # Also generate the full diagram
     print("Generating full diagram...")

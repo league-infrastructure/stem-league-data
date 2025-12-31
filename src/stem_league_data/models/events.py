@@ -9,6 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from stem_league_data.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
+    from stem_league_data.models.content import Content
     from stem_league_data.models.place import Metro, Venue, Org, Flyer
     from stem_league_data.models.people import Person
     from stem_league_data.models.jobs import InstructorAssignment
@@ -37,17 +38,12 @@ class Event(Base, TimestampMixin):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     slug: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
-    blurb: Mapped[str | None] = mapped_column(String(500))
-    short_description: Mapped[str | None] = mapped_column(Text)
-    description: Mapped[str | None] = mapped_column(Text)
-    instructions: Mapped[str | None] = mapped_column(Text)
-    enroll: Mapped[str | None] = mapped_column(Text)
-    event_date: Mapped[date | None] = mapped_column(Date)
-    start_time: Mapped[time | None] = mapped_column(Time)
-    end_time: Mapped[time | None] = mapped_column(Time)
+
+    start_dt: Mapped[datetime | None] = mapped_column(DateTime)
+    end_dt: Mapped[datetime | None] = mapped_column(DateTime)
+
     capacity: Mapped[int | None] = mapped_column(Integer)
-    available_slots: Mapped[int | None] = mapped_column(Integer)
+
     registration_type: Mapped[str | None] = mapped_column(String(50))  # enum: open, closed, waitlist, invite_only
     status: Mapped[str | None] = mapped_column(String(50))  # enum: draft, published, cancelled, completed
     walk_in_count: Mapped[int] = mapped_column(Integer, default=0)
@@ -59,12 +55,14 @@ class Event(Base, TimestampMixin):
     venue_id: Mapped[int] = mapped_column(ForeignKey("venues.id", ondelete="RESTRICT"), nullable=False)
     org_id: Mapped[int | None] = mapped_column(ForeignKey("orgs.id", ondelete="SET NULL"))
     prototype_id: Mapped[int | None] = mapped_column(ForeignKey("event_prototypes.id", ondelete="SET NULL"))
+    content_id: Mapped[int | None] = mapped_column(ForeignKey("contents.id", ondelete="SET NULL"))
 
     # Relationships
     metro: Mapped["Metro"] = relationship(back_populates="events")
     venue: Mapped["Venue"] = relationship(back_populates="events")
     org: Mapped["Org | None"] = relationship(back_populates="events")
     prototype: Mapped["EventPrototype | None"] = relationship(back_populates="events")
+    content: Mapped["Content | None"] = relationship()
     flyers: Mapped[list["Flyer"]] = relationship(
         secondary=flyer_events, back_populates="events"
     )
@@ -85,17 +83,13 @@ class EventPrototype(Base, TimestampMixin):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     slug: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
-    blurb: Mapped[str | None] = mapped_column(String(500))
-    short_description: Mapped[str | None] = mapped_column(Text)
-    description: Mapped[str | None] = mapped_column(Text)
-    instructions: Mapped[str | None] = mapped_column(Text)
-    enroll: Mapped[str | None] = mapped_column(Text)
     default_capacity: Mapped[int | None] = mapped_column(Integer)
     registration_type: Mapped[str | None] = mapped_column(String(50))
+    content_id: Mapped[int | None] = mapped_column(ForeignKey("contents.id", ondelete="SET NULL"))
 
     # Relationships
     events: Mapped[list["Event"]] = relationship(back_populates="prototype")
+    content: Mapped["Content | None"] = relationship()
 
 
 class Tag(Base):

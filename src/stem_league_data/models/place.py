@@ -20,9 +20,12 @@ class Metro(Base, TimestampMixin):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
+
     slug: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
-    coordinator_email: Mapped[str | None] = mapped_column(String(255))
+
     short_url_domain: Mapped[str | None] = mapped_column(String(255))
+
+    timezone: Mapped[str | None] = mapped_column(String(100))
 
     # Relationships
     venues: Mapped[list["Venue"]] = relationship(back_populates="metro")
