@@ -12,9 +12,9 @@ def test_package_imports():
 
 def test_models_import():
     """Test that models can be imported without circular import errors."""
-    from stem_league_data.models import Base, Metro, Event, Person
+    from stem_league_data.models import Base, Metro, Activity, Person
 
     assert Base is not None
     assert Metro is not None
-    assert Event is not None
+    assert Activity is not None
     assert Person is not None

@@ -9,7 +9,7 @@ from stem_league_data.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from stem_league_data.models.people import Person
-    from stem_league_data.models.events import Event
+    from stem_league_data.models.events import Activity
     from stem_league_data.models.jobs import JobPosting
 
 
@@ -31,7 +31,6 @@ class Metro(Base, TimestampMixin):
     venues: Mapped[list["Venue"]] = relationship(back_populates="metro")
     orgs: Mapped[list["Org"]] = relationship(back_populates="metro")
     persons: Mapped[list["Person"]] = relationship(back_populates="metro")
-    events: Mapped[list["Event"]] = relationship(back_populates="metro")
     job_postings: Mapped[list["JobPosting"]] = relationship(back_populates="metro")
 
 
@@ -53,7 +52,7 @@ class Org(Base, TimestampMixin):
     # Relationships
     metro: Mapped["Metro"] = relationship(back_populates="orgs")
     venues: Mapped[list["Venue"]] = relationship(back_populates="org")
-    events: Mapped[list["Event"]] = relationship(back_populates="org")
+    events: Mapped[list["Activity"]] = relationship(back_populates="org")
     job_postings: Mapped[list["JobPosting"]] = relationship(back_populates="org")
 
 
@@ -76,7 +75,7 @@ class Venue(Base, TimestampMixin):
     # Relationships
     metro: Mapped["Metro"] = relationship(back_populates="venues")
     org: Mapped["Org | None"] = relationship(back_populates="venues")
-    events: Mapped[list["Event"]] = relationship(back_populates="venue")
+    events: Mapped[list["Activity"]] = relationship(back_populates="venue")
 
 
 class Flyer(Base, TimestampMixin):
@@ -93,7 +92,7 @@ class Flyer(Base, TimestampMixin):
     utm_campaign: Mapped[str | None] = mapped_column(String(100))
     total_reach: Mapped[int | None] = mapped_column(Integer)
 
-    # Many-to-many with Event defined in events.py
-    events: Mapped[list["Event"]] = relationship(
+    # Many-to-many with Activity defined in events.py
+    events: Mapped[list["Activity"]] = relationship(
         secondary="flyer_events", back_populates="flyers"
     )

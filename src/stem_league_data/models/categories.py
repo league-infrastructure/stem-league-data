@@ -83,3 +83,13 @@ class Topic(Group):
     __mapper_args__ = {
         "polymorphic_identity": "topic",
     }
+
+
+class Tag(Base):
+    """A tag for categorizing events."""
+
+    __tablename__ = "tags"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    slug: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)

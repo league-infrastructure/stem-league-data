@@ -11,8 +11,8 @@ from stem_league_data.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from stem_league_data.models.place import Metro, Org
-    from stem_league_data.models.people import Person
-    from stem_league_data.models.events import Event
+    from stem_league_data.models.people import Staff
+    from stem_league_data.models.events import Activity
 
 
 class JobPosting(Base, TimestampMixin):
@@ -50,13 +50,13 @@ class InstructorAssignment(Base, TimestampMixin):
     confirmed: Mapped[bool] = mapped_column(Boolean, default=False)
     hours_worked: Mapped[Decimal | None] = mapped_column(Numeric(10, 2))
 
-    event_id: Mapped[int] = mapped_column(ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
-    instructor_id: Mapped[int] = mapped_column(ForeignKey("persons.id", ondelete="CASCADE"), nullable=False)
+    event_id: Mapped[int] = mapped_column(ForeignKey("activities.id", ondelete="CASCADE"), nullable=False)
+    instructor_id: Mapped[int] = mapped_column(ForeignKey("staff.id", ondelete="CASCADE"), nullable=False)
     employer_id: Mapped[int | None] = mapped_column(ForeignKey("orgs.id", ondelete="SET NULL"))
 
     # Relationships
-    event: Mapped["Event"] = relationship(back_populates="instructor_assignments")
-    instructor: Mapped["Person"] = relationship(back_populates="instructor_assignments")
+    activity: Mapped["Activity"] = relationship(back_populates="instructor_assignments")
+    instructor: Mapped["Staff"] = relationship(back_populates="instructor_assignments")
     employer: Mapped["Org | None"] = relationship()
     evaluations: Mapped[list["InstructorEvaluation"]] = relationship(
         back_populates="instructor_assignment"
@@ -79,10 +79,10 @@ class InstructorEvaluation(Base, TimestampMixin):
     instructor_assignment_id: Mapped[int] = mapped_column(
         ForeignKey("instructor_assignments.id", ondelete="SET NULL"), nullable=False
     )
-    evaluator_id: Mapped[int] = mapped_column(ForeignKey("persons.id", ondelete="SET NULL"), nullable=False)
+    evaluator_id: Mapped[int] = mapped_column(ForeignKey("staff.id", ondelete="SET NULL"), nullable=False)
 
     # Relationships
     instructor_assignment: Mapped["InstructorAssignment"] = relationship(
         back_populates="evaluations"
     )
-    evaluator: Mapped["Person"] = relationship(back_populates="evaluations_given")
+    evaluator: Mapped["Staff"] = relationship(back_populates="evaluations_given")

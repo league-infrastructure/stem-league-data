@@ -15,8 +15,8 @@ def test_all_models_import():
         # People
         Person,
         # Events
-        Event,
-        EventPrototype,
+        Service,
+        Activity,
         Tag,
         Registration,
         RSVP,
@@ -34,9 +34,6 @@ def test_all_models_import():
         # Content
         Content,
         Page,
-        Class,
-        Enrollment,
-        CTA,
         Announcement,
         # External Services
         Meetup,
@@ -64,7 +61,7 @@ def test_model_table_names():
         Venue,
         Org,
         Person,
-        Event,
+        Activity,
         Registration,
     )
 
@@ -72,29 +69,35 @@ def test_model_table_names():
     assert Venue.__tablename__ == "venues"
     assert Org.__tablename__ == "orgs"
     assert Person.__tablename__ == "persons"
-    assert Event.__tablename__ == "events"
+    assert Activity.__tablename__ == "activities"
     assert Registration.__tablename__ == "registrations"
 
 
 def test_model_relationships_defined():
     """Test that key relationships are defined on models."""
-    from stem_league_data.models import Metro, Event, Person
+    from stem_league_data.models import Metro, Venue, Activity, Person, Visitor
 
-    # Metro should have relationships to venues, orgs, persons, events
+    # Metro should have relationships to venues, orgs, persons
     assert hasattr(Metro, "venues")
     assert hasattr(Metro, "orgs")
     assert hasattr(Metro, "persons")
-    assert hasattr(Metro, "events")
 
-    # Event should have relationships
-    assert hasattr(Event, "metro")
-    assert hasattr(Event, "venue")
-    assert hasattr(Event, "registrations")
+    # Venue should have relationship to events (activities)
+    assert hasattr(Venue, "events")
+
+    # Activity should have relationships
+    assert hasattr(Activity, "venue")
+    assert hasattr(Activity, "registrations")
 
     # Person should have relationships
     assert hasattr(Person, "metro")
     assert hasattr(Person, "registrations")
-    assert hasattr(Person, "rsvps")
+    assert hasattr(Person, "guardian_rsvps")
+
+    # Visitor should have relationships
+    assert hasattr(Visitor, "rsvps")
+    assert hasattr(Visitor, "person")
+    assert hasattr(Visitor, "guardian")
 
 
 def test_group_inheritance():
