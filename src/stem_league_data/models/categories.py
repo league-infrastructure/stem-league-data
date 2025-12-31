@@ -12,7 +12,11 @@ if TYPE_CHECKING:
 
 
 class Group(Base, TimestampMixin):
-    """Base class for categorization groups."""
+    """Base class for categorization groups.
+    
+    Uses single-table inheritance. All subtypes (Program, Track, Category,
+    SubCategory, Topic) share this table with a `group_type` discriminator.
+    """
 
     __tablename__ = "groups"
 
