@@ -1,0 +1,2503 @@
+[
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 2274828,
+    "name": "League Admin",
+    "first_name": "League",
+    "middle_name": null,
+    "last_name": "Admin",
+    "phone": null,
+    "email": "waivers@jointheleague.org",
+    "role": "manager",
+    "location_id": 29970,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d83d5ac1-649f-43d1-8f10-3c29d925abd5/image_profile_x50.png",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d83d5ac1-649f-43d1-8f10-3c29d925abd5/image_profile_x100.png",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d83d5ac1-649f-43d1-8f10-3c29d925abd5/image_profile_x200.png",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d83d5ac1-649f-43d1-8f10-3c29d925abd5/image_profile_x400.png"
+    },
+    "custom_fields": [
+      {
+        "id": 19587626,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 19587627,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 19587619,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 9299174,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "admin account"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 2503800,
+    "name": "Keith Groves",
+    "first_name": "Keith",
+    "middle_name": null,
+    "last_name": "Groves",
+    "phone": "760-300-8629",
+    "email": "keith.groves@jointheleague.org",
+    "role": "owner",
+    "location_id": 22675,
+    "bio": "Lead Teacher<br>Keith.Groves@jointheleague.org",
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/1f6ef918-2b65-4128-9dbf-6ad0e4ce737b/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/1f6ef918-2b65-4128-9dbf-6ad0e4ce737b/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/1f6ef918-2b65-4128-9dbf-6ad0e4ce737b/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/1f6ef918-2b65-4128-9dbf-6ad0e4ce737b/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 19039026,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 19039027,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 19039022,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Liz Groves"
+      },
+      {
+        "id": 19039023,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "7608072194"
+      },
+      {
+        "id": 16890574,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": true
+      },
+      {
+        "id": 16890573,
+        "custom_field_id": 149097,
+        "name": "Live Scan Date",
+        "value": "2017-01-01"
+      },
+      {
+        "id": 9127142,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Head Teacher"
+      },
+      {
+        "id": 26856421,
+        "custom_field_id": 162576,
+        "name": "Primary Language Spoken at Home",
+        "value": "Spanish"
+      },
+      {
+        "id": 9127144,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Teaching Staff"
+      },
+      {
+        "id": 9675362,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      },
+      {
+        "id": 12865565,
+        "custom_field_id": 140367,
+        "name": "Start Info",
+        "value": "3/1/2016 F/T Staff"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 3368252,
+    "name": "Eric Busboom",
+    "first_name": "Eric",
+    "middle_name": null,
+    "last_name": "Busboom",
+    "phone": "6198897571",
+    "email": "eric.busboom@jointheleague.org",
+    "role": "primary_owner",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/2eea8dc1-056b-4e4e-a712-c388c8c2f55f/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/2eea8dc1-056b-4e4e-a712-c388c8c2f55f/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/2eea8dc1-056b-4e4e-a712-c388c8c2f55f/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/2eea8dc1-056b-4e4e-a712-c388c8c2f55f/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 12571337,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "eric@busboom.org"
+      },
+      {
+        "id": 19038962,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": true
+      },
+      {
+        "id": 19038963,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 19038956,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 11948395,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Volunteer"
+      },
+      {
+        "id": 11948397,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 7070628,
+    "name": "Liz Groves",
+    "first_name": "Liz",
+    "middle_name": null,
+    "last_name": "Groves",
+    "phone": "760-8072194",
+    "email": "liz.groves@jointheleague.org",
+    "role": "owner",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/edf421bc-b94c-4a43-8836-95d9e031e4f2/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/edf421bc-b94c-4a43-8836-95d9e031e4f2/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/edf421bc-b94c-4a43-8836-95d9e031e4f2/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/edf421bc-b94c-4a43-8836-95d9e031e4f2/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 25948753,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 25948754,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 25948749,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Keith Groves"
+      },
+      {
+        "id": 25948750,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "7603008629"
+      },
+      {
+        "id": 25948746,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 25948738,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Admin Staff"
+      },
+      {
+        "id": 25948740,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult M"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 3576696,
+    "name": "VA-Anurup Joseph",
+    "first_name": "VA-Anurup",
+    "middle_name": null,
+    "last_name": "Joseph",
+    "phone": "650-996-9208",
+    "email": "anurup.joseph@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25671e10-c7c4-406c-b42c-6e4572db10fa/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25671e10-c7c4-406c-b42c-6e4572db10fa/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25671e10-c7c4-406c-b42c-6e4572db10fa/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25671e10-c7c4-406c-b42c-6e4572db10fa/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 12600659,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "anurup.joseph@gmail.com"
+      },
+      {
+        "id": 21992463,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 21992464,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 21992457,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 21992456,
+        "custom_field_id": 149097,
+        "name": "Live Scan Date",
+        "value": "2017-02-01"
+      },
+      {
+        "id": 12600651,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Vol Teacher"
+      },
+      {
+        "id": 12600653,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult XL"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 5166821,
+    "name": "Mike Johnson",
+    "first_name": "Mike",
+    "middle_name": null,
+    "last_name": "Johnson",
+    "phone": "203-247-1242",
+    "email": "mike.johnson@jointheleague.org",
+    "role": "manager",
+    "location_id": 22675,
+    "bio": "Teacher<br>Mike.Johnson@jointheleague.org",
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d9b7891c-b91a-4e6c-a15f-45d631e8368b/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d9b7891c-b91a-4e6c-a15f-45d631e8368b/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d9b7891c-b91a-4e6c-a15f-45d631e8368b/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/d9b7891c-b91a-4e6c-a15f-45d631e8368b/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 18060038,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "Zaelix@gmail.com"
+      },
+      {
+        "id": 19039253,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 19039254,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 18060043,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Colleen Larvin"
+      },
+      {
+        "id": 18060044,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "708-822-6114"
+      },
+      {
+        "id": 18060037,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "Zaelix"
+      },
+      {
+        "id": 18060040,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": true
+      },
+      {
+        "id": 18060039,
+        "custom_field_id": 149097,
+        "name": "Live Scan Date",
+        "value": "2018-01-03"
+      },
+      {
+        "id": 18060032,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Teaching Staff"
+      },
+      {
+        "id": 18060034,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult M"
+      },
+      {
+        "id": 18060036,
+        "custom_field_id": 140367,
+        "name": "Start Info",
+        "value": "1/12/2018"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 7442429,
+    "name": "Colby Schexnayder",
+    "first_name": "Colby",
+    "middle_name": null,
+    "last_name": "Schexnayder",
+    "phone": "760-936-6341",
+    "email": "schexnayderhusser@gmail.com",
+    "role": "staff_member",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/b4e1ec62-e963-4a41-8986-cc8fffb27743/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/b4e1ec62-e963-4a41-8986-cc8fffb27743/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/b4e1ec62-e963-4a41-8986-cc8fffb27743/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/b4e1ec62-e963-4a41-8986-cc8fffb27743/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 27581081,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "colby.schexnayder@jointheleague.org"
+      },
+      {
+        "id": 27581090,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 27581091,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 27581086,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Diane Turner"
+      },
+      {
+        "id": 27581087,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "858-775-8179"
+      },
+      {
+        "id": 27581085,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "League of Amazing Programmers"
+      },
+      {
+        "id": 27581080,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "ColbySchexnayder"
+      },
+      {
+        "id": 27581083,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 27581074,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Teacher"
+      },
+      {
+        "id": 27581075,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Teaching Staff"
+      },
+      {
+        "id": 27581077,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      },
+      {
+        "id": 27581092,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Teacher"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 9206610,
+    "name": "Osvaldo Ruiz",
+    "first_name": "Osvaldo",
+    "middle_name": null,
+    "last_name": "Ruiz",
+    "phone": "619-213-9405",
+    "email": "osvaldo.ruiz@jointheleague.org",
+    "role": "manager",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/448bb4eb-056d-4fca-a462-9270526bee26/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/448bb4eb-056d-4fca-a462-9270526bee26/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/448bb4eb-056d-4fca-a462-9270526bee26/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/448bb4eb-056d-4fca-a462-9270526bee26/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 35719744,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "oruiz.code@gmail.com"
+      },
+      {
+        "id": 35719753,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 35719754,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 35719749,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Beatriz Aguirre"
+      },
+      {
+        "id": 35719750,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "619-431-7643"
+      },
+      {
+        "id": 35719748,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "The league of Amazing Programmers"
+      },
+      {
+        "id": 35719743,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "ruizosvaldo"
+      },
+      {
+        "id": 35719746,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": true
+      },
+      {
+        "id": 35719745,
+        "custom_field_id": 149097,
+        "name": "Live Scan Date",
+        "value": "2021-08-25"
+      },
+      {
+        "id": 35719738,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Instructor"
+      },
+      {
+        "id": 35719739,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Teaching Staff"
+      },
+      {
+        "id": 35719740,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      },
+      {
+        "id": 35719742,
+        "custom_field_id": 140367,
+        "name": "Start Info",
+        "value": "9/1/21"
+      },
+      {
+        "id": 35719755,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Programs Manager"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 10166404,
+    "name": "Nick Graham",
+    "first_name": "Nick",
+    "middle_name": null,
+    "last_name": "Graham",
+    "phone": "8587322894",
+    "email": "nick.graham@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/aba11dc5-b3f7-4144-843b-d66d0923f155/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/aba11dc5-b3f7-4144-843b-d66d0923f155/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/aba11dc5-b3f7-4144-843b-d66d0923f155/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/aba11dc5-b3f7-4144-843b-d66d0923f155/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 40178058,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 40178059,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 40178054,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Virginia Graham"
+      },
+      {
+        "id": 40178055,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "8587322894"
+      },
+      {
+        "id": 40178051,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 40178046,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 11498803,
+    "name": "Amy Zhao",
+    "first_name": "Amy",
+    "middle_name": null,
+    "last_name": "Zhao",
+    "phone": "8582804188",
+    "email": "amy.zhao@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 46323230,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 46323231,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 46323226,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Yun Yang"
+      },
+      {
+        "id": 46323227,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "9794226961"
+      },
+      {
+        "id": 46323223,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 46323217,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult M"
+      },
+      {
+        "id": 46323232,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Instructor"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 11941252,
+    "name": "Doug Clarke",
+    "first_name": "Doug",
+    "middle_name": null,
+    "last_name": "Clarke",
+    "phone": "8585251721",
+    "email": "altivecer@mac.com",
+    "role": "limited_staff_member",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/ab4abf6c-7cfa-4c5e-acf5-fbcab0b619cf/image_profile_x50.jpeg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/ab4abf6c-7cfa-4c5e-acf5-fbcab0b619cf/image_profile_x100.jpeg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/ab4abf6c-7cfa-4c5e-acf5-fbcab0b619cf/image_profile_x200.jpeg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/ab4abf6c-7cfa-4c5e-acf5-fbcab0b619cf/image_profile_x400.jpeg"
+    },
+    "custom_fields": [
+      {
+        "id": 48449223,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 48449224,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 48449216,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 48441029,
+        "custom_field_id": 162576,
+        "name": "Primary Language Spoken at Home",
+        "value": "English"
+      },
+      {
+        "id": 48449210,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Vol Teacher"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 2834688,
+    "name": "Sub Teacher",
+    "first_name": "Sub",
+    "middle_name": null,
+    "last_name": "Teacher",
+    "phone": null,
+    "email": "sub.teacher@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 29970,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/604b22a0-6941-4a22-8eac-b9e67b013116/image_profile_x50.jpeg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/604b22a0-6941-4a22-8eac-b9e67b013116/image_profile_x100.jpeg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/604b22a0-6941-4a22-8eac-b9e67b013116/image_profile_x200.jpeg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/604b22a0-6941-4a22-8eac-b9e67b013116/image_profile_x400.jpeg"
+    },
+    "custom_fields": [
+      {
+        "id": 19587590,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 19587591,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 19587583,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 10326828,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "admin account"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 5981007,
+    "name": "Needs Assistant",
+    "first_name": "Needs",
+    "middle_name": null,
+    "last_name": "Assistant",
+    "phone": null,
+    "email": "needAssistant@jointheleague.org",
+    "role": "limited_staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 21363016,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 21363017,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 21363009,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 21363001,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "admin account"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 7617381,
+    "name": "Needs Teacher",
+    "first_name": "Needs",
+    "middle_name": null,
+    "last_name": "Teacher",
+    "phone": null,
+    "email": "need.teacher@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 28326540,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 28326541,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 28326533,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 28326525,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Admin Staff"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 7101043,
+    "name": "Accepting Students",
+    "first_name": "Accepting",
+    "middle_name": null,
+    "last_name": "Students",
+    "phone": null,
+    "email": "acceptingStudents@jointheleague.org",
+    "role": "limited_staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 26093176,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 26093177,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 26093169,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 26093161,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "admin account"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 5525247,
+    "name": "Make-Up Lab",
+    "first_name": "Make-Up",
+    "middle_name": null,
+    "last_name": "Lab",
+    "phone": null,
+    "email": "open.lab@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 29970,
+    "bio": "<b></b><b><p><span style=\"background-color: rgb(255, 255, 255); font-size: 12pt;\">*** YOU MUST BE LOGGED INTO YOUR ACCOUNT FOR EVENTS TO BE VISIBLE***</span></p></b><p><span style=\"background-color: rgb(255, 255, 255); font-size: 12pt;\">Make-Up Lab is available for League students enrolled in a regular weekly class who have reported an absence (by email or phone call) or cancelled through the Parent Portal before a missed class has begun. The lab provides an opportunity for students to catch up on missed work. A League teacher is present at all times to provide assistance. </span><span style=\"background-color: rgb(255, 255, 255); font-size: 12pt;\">Please sign up for 1 Make-Up Lab per missed class. </span><span style=\"background-color: rgb(255, 255, 255); font-size: 12pt;\">Space is limited - reservations are required.</span></p><p><span style=\"background-color: rgb(255, 255, 255); font-size: 12pt;\">Please cancel online, or notify us if you are unable to attend. Frequently, there is a waiting list.</span></p><p><span style=\"background-color: rgb(255, 255, 255); font-size: 12pt;\">*Level tests may not be taken at Make-Up Labs. Tests can ONLY be taken during regular weekly classes.*</span></p>",
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/8079b04a-672c-49b0-823c-623632a4a93b/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/8079b04a-672c-49b0-823c-623632a4a93b/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/8079b04a-672c-49b0-823c-623632a4a93b/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/8079b04a-672c-49b0-823c-623632a4a93b/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 19562591,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 19562592,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 19562584,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 19562576,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "admin account"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 9498427,
+    "name": "Blake Jensen",
+    "first_name": "Blake",
+    "middle_name": null,
+    "last_name": "Jensen",
+    "phone": "8583670187",
+    "email": "bjensen.hk@gmail.com",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 37136514,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "bjensen.hk@gmail.com"
+      },
+      {
+        "id": 37136523,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 37136524,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 37136519,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Brianna Panarelli"
+      },
+      {
+        "id": 37136520,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "7742393592"
+      },
+      {
+        "id": 37136516,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": true
+      },
+      {
+        "id": 37136509,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "non-active"
+      },
+      {
+        "id": 37136510,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult XL"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 6825354,
+    "name": "VA-Rey Fidel",
+    "first_name": "VA-Rey",
+    "middle_name": null,
+    "last_name": "Fidel",
+    "phone": "619-370-6565",
+    "email": "rey.fidel@gmail.com",
+    "role": "staff_member",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 24803570,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 24803571,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 24803566,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Coco Rios FIdel"
+      },
+      {
+        "id": 24803567,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "619-395-6166"
+      },
+      {
+        "id": 24803565,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "General Atomics"
+      },
+      {
+        "id": 24803560,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "rey-rey"
+      },
+      {
+        "id": 24803563,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 24803554,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Software Programmer"
+      },
+      {
+        "id": 24803555,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Vol Teacher"
+      },
+      {
+        "id": 24803557,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      },
+      {
+        "id": 24803572,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Software Programmer"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 7861875,
+    "name": "VA-Tammy Neuhaus",
+    "first_name": "VA-Tammy",
+    "middle_name": null,
+    "last_name": "Neuhaus",
+    "phone": "619-517-5274",
+    "email": "tneuhaus1960@cox.net",
+    "role": "staff_member",
+    "location_id": 30565,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 29379771,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 29379772,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 29379767,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Paula Neuhaus"
+      },
+      {
+        "id": 29379768,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "6196652214"
+      },
+      {
+        "id": 29379766,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "retired"
+      },
+      {
+        "id": 29379761,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "tsneuhaus"
+      },
+      {
+        "id": 29379764,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 29379763,
+        "custom_field_id": 149097,
+        "name": "Live Scan Date",
+        "value": "2020-01-31"
+      },
+      {
+        "id": 29379756,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Vol Teacher"
+      },
+      {
+        "id": 29379758,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult M"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 11323921,
+    "name": "Jed Stumpf",
+    "first_name": "Jed",
+    "middle_name": null,
+    "last_name": "Stumpf",
+    "phone": "562-552-4906",
+    "email": "jed.stumpf@jointheleague.org",
+    "role": "manager",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/835de185-5cae-4a49-9225-f97eebcda21f/image_profile_x50.png",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/835de185-5cae-4a49-9225-f97eebcda21f/image_profile_x100.png",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/835de185-5cae-4a49-9225-f97eebcda21f/image_profile_x200.png",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/835de185-5cae-4a49-9225-f97eebcda21f/image_profile_x400.png"
+    },
+    "custom_fields": [
+      {
+        "id": 45524962,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 45524963,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 45524955,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 45524155,
+        "custom_field_id": 162576,
+        "name": "Primary Language Spoken at Home",
+        "value": "English"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 9033303,
+    "name": "TA-Dexter Haehnichen",
+    "first_name": "TA-Dexter",
+    "middle_name": null,
+    "last_name": "Haehnichen",
+    "phone": null,
+    "email": "dexter.haehnichen@jointheleague.org",
+    "role": "limited_staff_member",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 34876168,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 34876169,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 34876161,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 34876167,
+        "custom_field_id": 152501,
+        "name": "SF Client ID",
+        "value": "2815485"
+      },
+      {
+        "id": 34876154,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Student TA"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 11098920,
+    "name": "TA-Millan Kumar",
+    "first_name": "TA-Millan",
+    "middle_name": null,
+    "last_name": "Kumar",
+    "phone": null,
+    "email": "millan.kumar@jointheleague.org",
+    "role": "limited_staff_member",
+    "location_id": null,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 44483790,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 44483791,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 44483783,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 44483789,
+        "custom_field_id": 152501,
+        "name": "SF Client ID",
+        "value": "6723461"
+      },
+      {
+        "id": 44483776,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Student TA"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 11170497,
+    "name": "TA-Jeonghoo (Jay) Hyun",
+    "first_name": "TA-Jeonghoo (Jay)",
+    "middle_name": null,
+    "last_name": "Hyun",
+    "phone": "858-209-7792",
+    "email": "jay.hyun@jointheleague.org",
+    "role": "limited_staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/120144b2-9403-4a07-9700-e6a0260e5c08/image_profile_x50.png",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/120144b2-9403-4a07-9700-e6a0260e5c08/image_profile_x100.png",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/120144b2-9403-4a07-9700-e6a0260e5c08/image_profile_x200.png",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/120144b2-9403-4a07-9700-e6a0260e5c08/image_profile_x400.png"
+    },
+    "custom_fields": [
+      {
+        "id": 44821342,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "jayh80961@gmail.com"
+      },
+      {
+        "id": 44821351,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 44821352,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 44821347,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Haewon (Monica) You"
+      },
+      {
+        "id": 44821348,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "8582099667"
+      },
+      {
+        "id": 44821341,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "Jayh80961"
+      },
+      {
+        "id": 44821344,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 44821337,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Student TA"
+      },
+      {
+        "id": 44821338,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      },
+      {
+        "id": 44821340,
+        "custom_field_id": 140367,
+        "name": "Start Info",
+        "value": "3/25/2023"
+      },
+      {
+        "id": 44821353,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Student TA"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 12084094,
+    "name": "TA-Zander Zhao",
+    "first_name": "TA-Zander",
+    "middle_name": null,
+    "last_name": "Zhao",
+    "phone": "8582618991",
+    "email": "zanderscioly@gmail.com",
+    "role": "limited_staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/dd8998ff-37e1-4cb0-abae-3b8db929ada0/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/dd8998ff-37e1-4cb0-abae-3b8db929ada0/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/dd8998ff-37e1-4cb0-abae-3b8db929ada0/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/dd8998ff-37e1-4cb0-abae-3b8db929ada0/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 49125488,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 49125489,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 49125481,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 49125474,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Student TA"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 4057464,
+    "name": "Matt Freedman",
+    "first_name": "Matt",
+    "middle_name": null,
+    "last_name": "Freedman",
+    "phone": "(309) 825-3403",
+    "email": "matt.freedman@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": "Lead Teacher<br>Matt.Freedman@jointheleague.org<br>",
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/026f1237-dba8-4493-a59b-eb64f1ca3293/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/026f1237-dba8-4493-a59b-eb64f1ca3293/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/026f1237-dba8-4493-a59b-eb64f1ca3293/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/026f1237-dba8-4493-a59b-eb64f1ca3293/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 14154238,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "mjfre@aol.com"
+      },
+      {
+        "id": 19039053,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 19039054,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 15441050,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "The League "
+      },
+      {
+        "id": 14154237,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "mjfre"
+      },
+      {
+        "id": 16890611,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": true
+      },
+      {
+        "id": 16890610,
+        "custom_field_id": 149097,
+        "name": "Live Scan Date",
+        "value": "2017-01-01"
+      },
+      {
+        "id": 14154229,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Teacher"
+      },
+      {
+        "id": 14154230,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Teaching Staff"
+      },
+      {
+        "id": 14154232,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult XL"
+      },
+      {
+        "id": 14154236,
+        "custom_field_id": 140367,
+        "name": "Start Info",
+        "value": "9/1/17 F/T Staff"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 7363053,
+    "name": "Alfred Sherlock",
+    "first_name": "Alfred",
+    "middle_name": null,
+    "last_name": "Sherlock",
+    "phone": "7607042102",
+    "email": "Alfred.Sherlock@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 23281,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/7ee1c6de-c179-43c0-b0e0-594b2b37e176/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/7ee1c6de-c179-43c0-b0e0-594b2b37e176/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/7ee1c6de-c179-43c0-b0e0-594b2b37e176/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/7ee1c6de-c179-43c0-b0e0-594b2b37e176/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 27232478,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Jon sherlock"
+      },
+      {
+        "id": 27232479,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "n/a"
+      },
+      {
+        "id": 58859929,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "Osvaldo Ruiz"
+      },
+      {
+        "id": 27232481,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "alfredsherlocksems"
+      },
+      {
+        "id": 58859930,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Instructor"
+      },
+      {
+        "id": 27208744,
+        "custom_field_id": 162576,
+        "name": "Primary Language Spoken at Home",
+        "value": "English"
+      },
+      {
+        "id": 58859932,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Admin Staff"
+      },
+      {
+        "id": 58859933,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult M"
+      },
+      {
+        "id": 58859931,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Instructor"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 13173352,
+    "name": "Camille Phares",
+    "first_name": "Camille",
+    "middle_name": null,
+    "last_name": "Phares",
+    "phone": null,
+    "email": "camille.phares@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 42768,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 54231092,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 54231093,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 54231088,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Jason Holtkamp"
+      },
+      {
+        "id": 54231089,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "408-833-3209"
+      },
+      {
+        "id": 54231086,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 54231080,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Student TA"
+      },
+      {
+        "id": 54231081,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult M"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 2653972,
+    "name": "Colin Sepkovic",
+    "first_name": "Colin",
+    "middle_name": null,
+    "last_name": "Sepkovic",
+    "phone": null,
+    "email": "Colin.sepkovic@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25d468fe-4ffd-4bae-8bef-bfc37af50e15/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25d468fe-4ffd-4bae-8bef-bfc37af50e15/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25d468fe-4ffd-4bae-8bef-bfc37af50e15/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/25d468fe-4ffd-4bae-8bef-bfc37af50e15/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 50504286,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "csepko1412@gmail.com"
+      },
+      {
+        "id": 50504292,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 50504293,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 10233820,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Shana Sepkovic"
+      },
+      {
+        "id": 10233821,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "8582327709"
+      },
+      {
+        "id": 50504289,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "League of Amazing Programmers"
+      },
+      {
+        "id": 10233826,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "colinsepko"
+      },
+      {
+        "id": 50504288,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 50504282,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Teacher"
+      },
+      {
+        "id": 50504283,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Teaching Staff"
+      },
+      {
+        "id": 50504284,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult XL"
+      },
+      {
+        "id": 50504285,
+        "custom_field_id": 140367,
+        "name": "Start Info",
+        "value": "3/21/2024"
+      },
+      {
+        "id": 50504294,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Teacher"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 2653938,
+    "name": "Gavin Morris",
+    "first_name": "Gavin",
+    "middle_name": null,
+    "last_name": "Morris",
+    "phone": null,
+    "email": "gavin.morris@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/3eb1d456-97d0-4bb3-8c96-a383532258d7/image_profile_x50.png",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/3eb1d456-97d0-4bb3-8c96-a383532258d7/image_profile_x100.png",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/3eb1d456-97d0-4bb3-8c96-a383532258d7/image_profile_x200.png",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/3eb1d456-97d0-4bb3-8c96-a383532258d7/image_profile_x400.png"
+    },
+    "custom_fields": [
+      {
+        "id": 58064262,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "morrisgavin108@gmail.com"
+      },
+      {
+        "id": 58196078,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 58196079,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 9857878,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Megan Orvis Morris"
+      },
+      {
+        "id": 9857879,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "8584425631"
+      },
+      {
+        "id": 58064257,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "The League of Amazing Programmers"
+      },
+      {
+        "id": 12237516,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "GavinMorrisLeague"
+      },
+      {
+        "id": 58196075,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": true
+      },
+      {
+        "id": 58064258,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Instructor"
+      },
+      {
+        "id": 58064260,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Teaching Staff"
+      },
+      {
+        "id": 58064261,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 12990909,
+    "name": "Jen Ellermeyer",
+    "first_name": "Jen",
+    "middle_name": null,
+    "last_name": "Ellermeyer",
+    "phone": "1(530) 568-0204",
+    "email": "LAP@rnt.myworkplace.co",
+    "role": "manager",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 53336902,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 53336903,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 53336896,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 14443333,
+    "name": "Maggie Jiang",
+    "first_name": "Maggie",
+    "middle_name": null,
+    "last_name": "Jiang",
+    "phone": null,
+    "email": "chengyun.jiang@jointheleague.org",
+    "role": "staff_member",
+    "location_id": 42802,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": []
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 14491570,
+    "name": "Nathan Young",
+    "first_name": "Nathan",
+    "middle_name": null,
+    "last_name": "Young",
+    "phone": null,
+    "email": "natey3441@gmail.com",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 60512563,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Inbar Young"
+      },
+      {
+        "id": 60512564,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "6144064789"
+      },
+      {
+        "id": 60512555,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Student TA"
+      },
+      {
+        "id": 60512556,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult S"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 12190547,
+    "name": "TA - Shreyas Hosmani",
+    "first_name": "TA - Shreyas",
+    "middle_name": null,
+    "last_name": "Hosmani",
+    "phone": "8582450276",
+    "email": "shreyashosmani2009@gmail.com",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 54614585,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 54614586,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 49598020,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Ashwini Girwalkar"
+      },
+      {
+        "id": 49598021,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "8583421190"
+      },
+      {
+        "id": 54614581,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 54614576,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Student TA"
+      },
+      {
+        "id": 54614577,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult M"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 8110613,
+    "name": "TA-Drake Haehnichen",
+    "first_name": "TA-Drake",
+    "middle_name": null,
+    "last_name": "Haehnichen",
+    "phone": "8587353354",
+    "email": "drakehaehnic@gmail.com",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4dbc87-66f8-4737-9d2d-0b575bb2f53f/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4dbc87-66f8-4737-9d2d-0b575bb2f53f/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4dbc87-66f8-4737-9d2d-0b575bb2f53f/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4dbc87-66f8-4737-9d2d-0b575bb2f53f/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 30513004,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "Borl-Jefferson"
+      },
+      {
+        "id": 30490461,
+        "custom_field_id": 162576,
+        "name": "Primary Language Spoken at Home",
+        "value": "English"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 10959939,
+    "name": "TA-Evan Keri",
+    "first_name": "TA-Evan",
+    "middle_name": null,
+    "last_name": "Keri",
+    "phone": "8583374469",
+    "email": null,
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4473d9-c347-46ac-b3fd-2fd33cf870bd/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4473d9-c347-46ac-b3fd-2fd33cf870bd/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4473d9-c347-46ac-b3fd-2fd33cf870bd/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0e4473d9-c347-46ac-b3fd-2fd33cf870bd/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 43948591,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "SHIRA keri"
+      },
+      {
+        "id": 43948592,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "18583374469"
+      },
+      {
+        "id": 43958310,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "evank2008"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 4434708,
+    "name": "Tate Criqui",
+    "first_name": "Tate",
+    "middle_name": null,
+    "last_name": "Criqui",
+    "phone": "6023777199",
+    "email": "tatecriqui@gmail.com",
+    "role": "staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0a4697d2-362c-4852-a34d-5590f76e1873/image_profile_x50.jpeg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0a4697d2-362c-4852-a34d-5590f76e1873/image_profile_x100.jpeg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0a4697d2-362c-4852-a34d-5590f76e1873/image_profile_x200.jpeg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/0a4697d2-362c-4852-a34d-5590f76e1873/image_profile_x400.jpeg"
+    },
+    "custom_fields": [
+      {
+        "id": 15848016,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Marisa Hildebrand-Criqui"
+      },
+      {
+        "id": 15848017,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "6023777199"
+      },
+      {
+        "id": 58411248,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "The League of Amazing Programmers"
+      },
+      {
+        "id": 15848021,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "tlcrack (password same as school acct)"
+      },
+      {
+        "id": 58411249,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Teacher"
+      },
+      {
+        "id": 58411251,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Vol Teacher"
+      },
+      {
+        "id": 58411252,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult L"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 12435894,
+    "name": "VA-Nicholas Walton",
+    "first_name": "VA-Nicholas",
+    "middle_name": null,
+    "last_name": "Walton",
+    "phone": null,
+    "email": "nicholas.walton@jointheleague.org",
+    "role": "limited_staff_member",
+    "location_id": 22675,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "profile_photo": {
+      "x50": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/499a5aba-3ce9-481d-b6fc-db7b7f863353/image_profile_x50.jpg",
+      "x100": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/499a5aba-3ce9-481d-b6fc-db7b7f863353/image_profile_x100.jpg",
+      "x200": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/499a5aba-3ce9-481d-b6fc-db7b7f863353/image_profile_x200.jpg",
+      "x400": "https://d1nqv8xdwxria6.cloudfront.net/uploads/profile_photo/image/499a5aba-3ce9-481d-b6fc-db7b7f863353/image_profile_x400.jpg"
+    },
+    "custom_fields": [
+      {
+        "id": 50751697,
+        "custom_field_id": 140368,
+        "name": "Alternate Email(s)",
+        "value": "nicholaswalton@gmail.com"
+      },
+      {
+        "id": 50751705,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 50751706,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": true
+      },
+      {
+        "id": 50751701,
+        "custom_field_id": 106321,
+        "name": "Emergency Contact, Full Name",
+        "value": "Joe Burch"
+      },
+      {
+        "id": 50751702,
+        "custom_field_id": 106322,
+        "name": "Emergency Contact, Phone Number",
+        "value": "760 940 6214"
+      },
+      {
+        "id": 50751700,
+        "custom_field_id": 133180,
+        "name": "Employer?",
+        "value": "TBD"
+      },
+      {
+        "id": 50751696,
+        "custom_field_id": 127885,
+        "name": "GitHub acct name",
+        "value": "NicholasWalton"
+      },
+      {
+        "id": 50751699,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      },
+      {
+        "id": 50751692,
+        "custom_field_id": 106324,
+        "name": "Occupation?",
+        "value": "Software Engineer"
+      },
+      {
+        "id": 50751693,
+        "custom_field_id": 106325,
+        "name": "Staff Category",
+        "value": "Volunteer"
+      },
+      {
+        "id": 50751694,
+        "custom_field_id": 106737,
+        "name": "Staff T-Shirt",
+        "value": "Adult XL"
+      },
+      {
+        "id": 50751695,
+        "custom_field_id": 140367,
+        "name": "Start Info",
+        "value": "3/9/24"
+      },
+      {
+        "id": 50751707,
+        "custom_field_id": 154726,
+        "name": "Title",
+        "value": "Senior Software Engineer"
+      }
+    ]
+  },
+  {
+    "_class": "Pike13StaffMember",
+    "_field": "staff_member",
+    "_collection": "staff",
+    "_source": "pike13",
+    "id": 12499133,
+    "name": "VA-Pelumi Eniodunmo",
+    "first_name": "VA-Pelumi",
+    "middle_name": null,
+    "last_name": "Eniodunmo",
+    "phone": null,
+    "email": "pelumi.lumzeny@jointheleague.org",
+    "role": "staff_member",
+    "location_id": null,
+    "bio": null,
+    "commissionable": false,
+    "deleted_at": null,
+    "hidden_at": null,
+    "custom_fields": [
+      {
+        "id": 51044913,
+        "custom_field_id": 153299,
+        "name": "Current Board Member?",
+        "value": false
+      },
+      {
+        "id": 51044914,
+        "custom_field_id": 153300,
+        "name": "Current Staff Member?",
+        "value": false
+      },
+      {
+        "id": 51044907,
+        "custom_field_id": 149098,
+        "name": "Key Holder?",
+        "value": false
+      }
+    ]
+  }
+]

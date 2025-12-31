@@ -93,6 +93,6 @@ class Flyer(Base, TimestampMixin):
     total_reach: Mapped[int | None] = mapped_column(Integer)
 
     # Many-to-many with Activity defined in events.py
-    events: Mapped[list["Activity"]] = relationship(
-        secondary="flyer_events", back_populates="flyers"
+    activities: Mapped[list["Activity"]] = relationship(
+        secondary="flyer_activities", back_populates="flyers"
     )

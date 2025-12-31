@@ -1,0 +1,37 @@
+{
+  "44501": {
+    "id": 44501,
+    "name": "After School Learning Tree (LT)",
+    "code": "LT",
+    "lat": 32.911798,
+    "lon": -117.230092
+  },
+  "44502": {
+    "id": 44502,
+    "name": "Wonder Quest Learning Center (WQ)",
+    "code": "WQ",
+    "lat": 32.922725,
+    "lon": -117.232121
+  },
+  "44503": {
+    "id": 44503,
+    "name": "The Legacy Alliance (LA)",
+    "code": "LA",
+    "lat": 33.1130822,
+    "lon": -117.2276717
+  },
+  "44549": {
+    "id": 44549,
+    "name": "St. Francis of Assisi (SFA)",
+    "code": "SFA",
+    "lat": 33.1966061,
+    "lon": -117.2533233
+  },
+  "44584": {
+    "id": 44584,
+    "name": "High Tech High Mesa (HTH)",
+    "code": "HTH",
+    "lat": 32.8166989,
+    "lon": -117.1821031
+  }
+}

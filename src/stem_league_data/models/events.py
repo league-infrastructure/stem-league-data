@@ -53,18 +53,18 @@ activity_subcategories = Table(
     Column("subcategory_id", ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True),
 )
 
-# Association tables for Event
-flyer_events = Table(
-    "flyer_events",
+# Association tables for Activity
+flyer_activities = Table(
+    "flyer_activities",
     Base.metadata,
     Column("flyer_id", ForeignKey("flyers.id", ondelete="CASCADE"), primary_key=True),
-    Column("event_id", ForeignKey("events.id", ondelete="CASCADE"), primary_key=True),
+    Column("activity_id", ForeignKey("activities.id", ondelete="CASCADE"), primary_key=True),
 )
 
-event_tags = Table(
-    "event_tags",
+activity_tags = Table(
+    "activity_tags",
     Base.metadata,
-    Column("event_id", ForeignKey("events.id", ondelete="CASCADE"), primary_key=True),
+    Column("activity_id", ForeignKey("activities.id", ondelete="CASCADE"), primary_key=True),
     Column("tag_id", ForeignKey("tags.id", ondelete="CASCADE"), primary_key=True),
 )
 
@@ -156,6 +156,27 @@ class Activity(Base, TimestampMixin):
     instructor_assignments: Mapped[list["InstructorAssignment"]] = relationship(
         back_populates="activity"
     )
+    occurrences: Mapped[list["Occurrence"]] = relationship(back_populates="activity")
+
+
+class Occurrence(Base, TimestampMixin):
+    """A specific time occurrence of an Activity."""
+
+    __tablename__ = "occurrences"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    start_time: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    end_time: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    rsvp_count: Mapped[int] = mapped_column(Integer, default=0)
+    visitor_count: Mapped[int] = mapped_column(Integer, default=0)
+    walk_in_count: Mapped[int] = mapped_column(Integer, default=0)
+    notes: Mapped[str | None] = mapped_column(Text)
+
+    activity_id: Mapped[int] = mapped_column(ForeignKey("activities.id", ondelete="CASCADE"), nullable=False)
+
+    # Relationships
+    activity: Mapped["Activity"] = relationship(back_populates="occurrences")
+
 
 class MarketingStats(Base, TimestampMixin):
     """Marketing statistics for events."""
@@ -171,7 +192,7 @@ class MarketingStats(Base, TimestampMixin):
     # Relationships
 
     flyers: Mapped[list["Flyer"]] = relationship(
-        secondary=flyer_events, back_populates="events"
+        secondary=flyer_activities, back_populates="activities"
     )
 
 
@@ -186,11 +207,11 @@ class Registration(Base, TimestampMixin):
     utm_campaign: Mapped[str | None] = mapped_column(String(100))
     notes: Mapped[str | None] = mapped_column(Text)
 
-    event_id: Mapped[int] = mapped_column(ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
+    event_id: Mapped[int] = mapped_column(ForeignKey("activities.id", ondelete="CASCADE"), nullable=False)
     registrant_id: Mapped[int] = mapped_column(ForeignKey("persons.id", ondelete="CASCADE"), nullable=False)
 
     # Relationships
-    event: Mapped["Activity"] = relationship(back_populates="registrations")
+    activity: Mapped["Activity"] = relationship(back_populates="registrations")
     registrant: Mapped["Person"] = relationship(back_populates="registrations")
     rsvps: Mapped[list["RSVP"]] = relationship(back_populates="registration")
 

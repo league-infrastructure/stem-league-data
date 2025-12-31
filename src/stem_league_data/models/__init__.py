@@ -3,7 +3,7 @@
 from stem_league_data.models.base import Base
 from stem_league_data.models.place import Metro, Venue, Org, Flyer
 from stem_league_data.models.people import Person, Staff, Visitor
-from stem_league_data.models.events import Registration, RSVP, Service, Activity
+from stem_league_data.models.events import Registration, RSVP, Service, Activity, Occurrence
 from stem_league_data.models.jobs import JobPosting, InstructorAssignment, InstructorEvaluation
 from stem_league_data.models.categories import Group, Program, Track, Category, SubCategory, Topic, Tag
 from stem_league_data.models.content import Content, Page, Announcement
@@ -23,6 +23,7 @@ __all__ = [
     # Events
     "Service",
     "Activity",
+    "Occurrence",
     "Tag",
     "Registration",
     "RSVP",

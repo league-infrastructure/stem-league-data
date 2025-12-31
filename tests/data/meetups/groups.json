@@ -1,0 +1,57 @@
+[
+  {
+    "slug": "tech-club/snake",
+    "meetup_slug": "the-league-tech-club",
+    "group": "tech-club",
+    "subgroup": "snake",
+    "event_url": "https://www.meetup.com/the-league-tech-club",
+    "_class": "Meetup",
+    "_field": "meetup",
+    "_collection": "meetups",
+    "_source": "snips"
+  },
+  {
+    "slug": "tech-club/hammer_and_wrench",
+    "meetup_slug": "the-league-tech-club",
+    "group": "tech-club",
+    "subgroup": "hammer_and_wrench",
+    "event_url": "https://www.meetup.com/the-league-tech-club",
+    "_class": "Meetup",
+    "_field": "meetup",
+    "_collection": "meetups",
+    "_source": "snips"
+  },
+  {
+    "slug": "tech-club/video_game",
+    "meetup_slug": "the-league-tech-club",
+    "group": "tech-club",
+    "subgroup": "video_game",
+    "event_url": "https://www.meetup.com/the-league-tech-club",
+    "_class": "Meetup",
+    "_field": "meetup",
+    "_collection": "meetups",
+    "_source": "snips"
+  },
+  {
+    "slug": "tech-club/robot",
+    "meetup_slug": "the-league-tech-club",
+    "group": "tech-club",
+    "subgroup": "robot",
+    "event_url": "https://www.meetup.com/the-league-tech-club",
+    "_class": "Meetup",
+    "_field": "meetup",
+    "_collection": "meetups",
+    "_source": "snips"
+  },
+  {
+    "slug": "tech-club/brain",
+    "meetup_slug": "the-league-tech-club",
+    "group": "tech-club",
+    "subgroup": "brain",
+    "event_url": "https://www.meetup.com/the-league-tech-club",
+    "_class": "Meetup",
+    "_field": "meetup",
+    "_collection": "meetups",
+    "_source": "snips"
+  }
+]
