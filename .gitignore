@@ -1,26 +1,55 @@
-# Dependencies
-node_modules/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Build output
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
 dist/
+*.egg-info/
+*.egg
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# Environment
+# Environment / secrets
 .env
 .env.local
+*.agekey
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# mypy
+.mypy_cache/
+
+# ruff
+.ruff_cache/
 
 # Logs
 *.log
-npm-debug.log*
 
-/src/generated/prisma
-
-.env
-*.agekey
+# Jupyter
+.ipynb_checkpoints/
