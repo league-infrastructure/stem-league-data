@@ -173,7 +173,10 @@ exist yet
     },
     "start_dt": "2026-01-15T16:00:00",
     "end_dt": "2026-03-15T17:30:00",
-    "day_numbers": [2, 4],
+    "schedule": {
+      "frequency": "WEEKLY",
+      "days": [2, 4]
+    },
     "capacity": 20,
     "registration_type": "open",
     "programs": ["after-school"],
@@ -213,7 +216,10 @@ to reference existing records.
     "venue_id": 123,
     "start_dt": "2026-04-01T16:00:00",
     "end_dt": "2026-06-01T17:30:00",
-    "day_numbers": [1, 3],
+    "schedule": {
+      "frequency": "WEEKLY",
+      "days": [1, 3]
+    },
     "capacity": 15
   }
 }
@@ -241,6 +247,7 @@ to reference existing records.
   "activity": {
     "type": "event",
     "venue_id": 123,
+    "schedule": null,
     "capacity": 30
   },
   "occurrences": [
@@ -600,20 +607,109 @@ Generated Occurrences:
 
 ## Design Notes
 
-### Activity Scheduling Philosophy
+### Activity Scheduling with RRule
 
-The API supports three scheduling patterns:
+Activity scheduling is controlled by an embedded `schedule` object (RRule) that
+supports four patterns. The schedule is validated before occurrence generation.
 
-1. **Regular recurring** (day_numbers): Weekly classes on specific days
-2. **Complex recurring** (rrule): Monthly, bi-weekly, or other RFC 5545
-   patterns
-3. **Manual** (explicit occurrences): Irregular events like meetups
+#### Scheduling Patterns
 
-The system derives what it can from minimal input:
-- Time of day comes from start_dt
-- Duration comes from start_dt to end_dt (same-day interpretation)
-- Repeat pattern comes from day_numbers or rrule
-- Series bounds come from start_dt date through end_dt date
+**1. Manual (no automatic occurrences)**
+```json
+{
+  "activity": {
+    "schedule": null
+  },
+  "occurrences": [
+    { "start_time": "2026-01-18T14:00:00", "end_time": "2026-01-18T16:00:00" },
+    { "start_time": "2026-02-15T14:00:00", "end_time": "2026-02-15T16:00:00" }
+  ]
+}
+```
+Use for: Meetups, irregular events, one-off workshops. Occurrences are
+specified explicitly in the request or added later.
+
+**2. Single Occurrence (ONCE)**
+```json
+{
+  "activity": {
+    "start_dt": "2026-02-14T10:00:00",
+    "end_dt": "2026-02-14T12:00:00",
+    "schedule": { "frequency": "ONCE" }
+  }
+}
+```
+Use for: One-time events. A single occurrence is generated from start_dt/end_dt.
+
+**3. Weekly Recurring (WEEKLY)**
+```json
+{
+  "activity": {
+    "start_dt": "2026-01-15T16:00:00",
+    "end_dt": "2026-03-15T17:30:00",
+    "schedule": {
+      "frequency": "WEEKLY",
+      "days": [2, 4],
+      "interval": 1
+    }
+  }
+}
+```
+- `days`: Weekdays to recur on (Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat=5, Sun=6)
+- `interval`: Every N weeks (default 1)
+- `count`: Optional max number of occurrences
+
+Use for: Regular weekly classes. Example above generates Wed/Fri occurrences
+from Jan 15 to Mar 15.
+
+**4. Monthly Nth Weekday (MONTHLY)**
+```json
+{
+  "activity": {
+    "start_dt": "2026-01-01T14:00:00",
+    "end_dt": "2026-12-31T16:00:00",
+    "schedule": {
+      "frequency": "MONTHLY",
+      "days": [5],
+      "setpos": -1,
+      "interval": 1
+    }
+  }
+}
+```
+- `days`: Exactly one weekday
+- `setpos`: Which occurrence (1-5 for 1st-5th, -1 for last)
+- `interval`: Every N months (default 1)
+
+Use for: Monthly events like "4th Tuesday" or "last Saturday" of each month.
+
+#### Schedule Validation Rules
+
+| Frequency | days | setpos | interval | count |
+|-----------|------|--------|----------|-------|
+| null (manual) | must be empty | must be empty | ignored | ignored |
+| ONCE | must be empty | must be empty | ignored | ignored |
+| WEEKLY | 1+ weekdays (0-6) | must be empty | >= 1 | optional |
+| MONTHLY | exactly 1 weekday | 1-5 or -1 | >= 1 | optional |
+
+#### Occurrence Generation
+
+When an Activity is created with a schedule:
+
+1. **start_dt** provides:
+   - The first possible occurrence date
+   - The time-of-day for all occurrences
+
+2. **end_dt** provides:
+   - The last possible occurrence date
+   - The duration (end_dt time minus start_dt time)
+
+3. **schedule** controls:
+   - Which dates within the range get occurrences
+   - For WEEKLY: all matching weekdays between start_dt and end_dt
+   - For MONTHLY: all matching Nth weekdays between start_dt and end_dt
+   - For ONCE: just start_dt itself
+   - For manual (null): no automatic generation
 
 ### Content Resolution
 
