@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, String, Text, Integer, Boolean, Date, Time, DateTime, Table, Column
 from sqlalchemy.dialects.postgresql import ARRAY
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, composite
 
 from stem_league_data.models.base import Base, TimestampMixin
 
@@ -132,6 +132,135 @@ class Service(Base, TimestampMixin):
     activities: Mapped[list["Activity"]] = relationship(back_populates="service")
 
 
+class RRule:
+    """Recurrence rule for scheduling activities.
+
+    This is a composite value object (not a separate table) - its fields are
+    embedded directly in the parent table (e.g., Activity).
+
+    Supported shapes:
+
+    - Single (non-recurring) events: frequency == "ONCE" (no RRULE is emitted).
+    - Weekly recurring events: frequency == "WEEKLY" and days contains 1+ weekdays.
+    - Monthly "Nth weekday" events: frequency == "MONTHLY" with exactly one
+      weekday in days and setpos indicating the Nth occurrence (e.g., 4 for
+      "4th", -1 for "last").
+
+    Weekday numbering uses Mon=0 .. Sun=6.
+
+    Notes:
+    - `count` represents RRULE COUNT (total number of occurrences). If you need
+      an UNTIL boundary, derive it from occurrences externally; storing UNTIL
+      is intentionally omitted to avoid redundancy.
+    """
+
+    def __init__(
+        self,
+        frequency: str | None = "ONCE",
+        interval: int | None = 1,
+        days: list[int] | None = None,
+        setpos: int | None = 0,
+        count: int | None = None,
+    ):
+        self.frequency = frequency or "ONCE"
+        self.interval = interval or 1
+        self.days = days
+        self.setpos = setpos or 0
+        self.count = count
+
+    def __composite_values__(self):
+        return self.frequency, self.interval, self.days, self.setpos, self.count
+
+    def __repr__(self):
+        return (
+            f"RRule(frequency={self.frequency!r}, interval={self.interval}, "
+            f"days={self.days}, setpos={self.setpos}, count={self.count})"
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, RRule):
+            return False
+        return (
+            self.frequency == other.frequency
+            and self.interval == other.interval
+            and self.days == other.days
+            and self.setpos == other.setpos
+            and self.count == other.count
+        )
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    # --- RRULE serialization ---
+
+    _WKDAY_TOKENS = ("MO", "TU", "WE", "TH", "FR", "SA", "SU")
+
+    def to_ical_rrule(self) -> str | None:
+        """Return an iCalendar RRULE line for this recurrence, or None for ONCE.
+
+        Examples:
+            - WEEKLY on Wed/Fri for 6 occurrences:
+              RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=WE,FR;COUNT=6
+
+            - MONTHLY on the 4th Tuesday:
+              RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=TU;BYSETPOS=4
+
+        Validation is strict for the supported shapes and will raise ValueError
+        if the stored fields are inconsistent.
+        """
+
+        freq = (self.frequency or "").upper()
+
+        if freq == "ONCE":
+            return None
+
+        if freq not in {"WEEKLY", "MONTHLY"}:
+            raise ValueError(f"Unsupported frequency: {self.frequency!r}")
+
+        interval = int(self.interval or 1)
+        if interval < 1:
+            raise ValueError("interval must be >= 1")
+
+        days = list(self.days or [])
+        if freq == "WEEKLY":
+            if not days:
+                raise ValueError("WEEKLY rules require at least one weekday in days")
+            if self.setpos not in (0, None):
+                raise ValueError("WEEKLY rules must not set setpos")
+
+        if freq == "MONTHLY":
+            if len(days) != 1:
+                raise ValueError("MONTHLY rules require exactly one weekday in days")
+            if self.setpos == 0:
+                raise ValueError(
+                    "MONTHLY rules require setpos (e.g., 4 for 4th, -1 for last)"
+                )
+
+        # Validate weekday integers and map to iCal tokens
+        tokens: list[str] = []
+        for d in days:
+            if not isinstance(d, int):
+                raise ValueError("days must be a list of integers")
+            if d < 0 or d > 6:
+                raise ValueError("weekday values must be in range 0..6 (Mon..Sun)")
+            tokens.append(self._WKDAY_TOKENS[d])
+
+        parts: list[str] = [f"FREQ={freq}", f"INTERVAL={interval}"]
+
+        if tokens:
+            parts.append("BYDAY=" + ",".join(tokens))
+
+        if freq == "MONTHLY":
+            parts.append(f"BYSETPOS={int(self.setpos)}")
+
+        if self.count is not None:
+            count_val = int(self.count)
+            if count_val < 1:
+                raise ValueError("count (COUNT) must be >= 1")
+            parts.append(f"COUNT={count_val}")
+
+        return "RRULE:" + ";".join(parts)
+
 class Activity(Base, TimestampMixin):
     """An activity is a scheduled delivery of a service, and is specialized to 
     a class ( fixed recuring schedule), a course (limited number of scheduled
@@ -152,11 +281,25 @@ class Activity(Base, TimestampMixin):
     content_id: Mapped[int | None] = mapped_column(ForeignKey("contents.id", ondelete="SET NULL"))
     content: Mapped["Content | None"] = relationship(foreign_keys="[Activity.content_id]")
 
-    # Schedule. These values here must match with type
+    # Schedule - embedded RRule composite (columns stored directly in activities table)
     start_dt: Mapped[datetime | None] = mapped_column(DateTime)
     end_dt: Mapped[datetime | None] = mapped_column(DateTime)
-    day_numbers: Mapped[list[int] | None] = mapped_column(ARRAY(Integer))  # 0=Mon, 6=Sun
-    rrule: Mapped[str | None] = mapped_column(String(500))  # iCal recurrence rule
+    
+    # RRule fields (embedded as columns with schedule_ prefix)
+    schedule_frequency: Mapped[str | None] = mapped_column(String(16), default="ONCE")
+    schedule_interval: Mapped[int | None] = mapped_column(Integer, default=1)
+    schedule_days: Mapped[list[int] | None] = mapped_column(ARRAY(Integer))
+    schedule_setpos: Mapped[int | None] = mapped_column(Integer, default=0)
+    schedule_count: Mapped[int | None] = mapped_column(Integer)
+
+    schedule: Mapped[RRule | None] = composite(
+        RRule,
+        schedule_frequency,
+        schedule_interval,
+        schedule_days,
+        schedule_setpos,
+        schedule_count,
+    )
 
     # Location and sponsor
     venue_id: Mapped[int] = mapped_column( ForeignKey("venues.id", ondelete="RESTRICT"), nullable=False)
