@@ -53,6 +53,35 @@ activity_subcategories = Table(
     Column("subcategory_id", ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True),
 )
 
+# Association tables for Service
+service_topics = Table(
+    "service_topics",
+    Base.metadata,
+    Column("service_id", ForeignKey("services.id", ondelete="CASCADE"), primary_key=True),
+    Column("topic_id", ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True),
+)
+
+service_tracks = Table(
+    "service_tracks",
+    Base.metadata,
+    Column("service_id", ForeignKey("services.id", ondelete="CASCADE"), primary_key=True),
+    Column("track_id", ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True),
+)
+
+service_categories = Table(
+    "service_categories",
+    Base.metadata,
+    Column("service_id", ForeignKey("services.id", ondelete="CASCADE"), primary_key=True),
+    Column("category_id", ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True),
+)
+
+service_subcategories = Table(
+    "service_subcategories",
+    Base.metadata,
+    Column("service_id", ForeignKey("services.id", ondelete="CASCADE"), primary_key=True),
+    Column("subcategory_id", ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True),
+)
+
 # Association tables for Activity
 flyer_activities = Table(
     "flyer_activities",
@@ -81,17 +110,25 @@ class Service(Base, TimestampMixin):
     content_id: Mapped[int | None] = mapped_column(ForeignKey("contents.id", ondelete="SET NULL"))
     content: Mapped["Content | None"] = relationship()
 
+    pike13_service_id: Mapped[int | None] = mapped_column(Integer)
+
     grade: Mapped[str | None] = mapped_column(String(50))
     level: Mapped[str | None] = mapped_column(String(50))
-    topics: Mapped[list["Topic"]] = relationship(secondary=activity_topics)
+    topics: Mapped[list["Topic"]] = relationship(secondary=service_topics)
     
-    tracks: Mapped[list["Track"]] = relationship(secondary=activity_tracks)
-    categories: Mapped[list["Category"]] = relationship(secondary=activity_categories)
-    subcategories: Mapped[list["SubCategory"]] = relationship(secondary=activity_subcategories)
+    tracks: Mapped[list["Track"]] = relationship(secondary=service_tracks)
+    categories: Mapped[list["Category"]] = relationship(secondary=service_categories)
+    subcategories: Mapped[list["SubCategory"]] = relationship(secondary=service_subcategories)
 
     curriculum_link: Mapped[str | None] = mapped_column(String(500))
     
-    subordinate_to: Mapped[list["Service"]] = relationship(back_populates="superior_to")
+    # Self-referential relationship for service hierarchy
+    parent_service_id: Mapped[int | None] = mapped_column(ForeignKey("services.id", ondelete="SET NULL"))
+    subordinate_to: Mapped["Service | None"] = relationship(
+        back_populates="superior_to", remote_side="Service.id"
+    )
+    superior_to: Mapped[list["Service"]] = relationship(back_populates="subordinate_to")
+    
     activities: Mapped[list["Activity"]] = relationship(back_populates="service")
 
 
@@ -113,7 +150,7 @@ class Activity(Base, TimestampMixin):
 
     # Content about this activity; there is also content in the service
     content_id: Mapped[int | None] = mapped_column(ForeignKey("contents.id", ondelete="SET NULL"))
-    content: Mapped["Content | None"] = relationship()
+    content: Mapped["Content | None"] = relationship(foreign_keys="[Activity.content_id]")
 
     # Schedule. These values here must match with type
     start_dt: Mapped[datetime | None] = mapped_column(DateTime)
@@ -146,17 +183,21 @@ class Activity(Base, TimestampMixin):
     tracks: Mapped[list["Track"]] = relationship(secondary=activity_tracks)
     categories: Mapped[list["Category"]] = relationship(secondary=activity_categories)
     subcategories: Mapped[list["SubCategory"]] = relationship(secondary=activity_subcategories)
+    topics: Mapped[list["Topic"]] = relationship(secondary=activity_topics)
 
     capacity: Mapped[int | None] = mapped_column(Integer)
 
     registration_type: Mapped[str | None] = mapped_column( String(50) )  # enum: open, closed, waitlist, invite_only
-    registrations: Mapped[list["Registration"]] = relationship(back_populates="event")
+    registrations: Mapped[list["Registration"]] = relationship(back_populates="activity")
 
-    rsvps: Mapped[list["RSVP"]] = relationship(back_populates="event")
+    rsvps: Mapped[list["RSVP"]] = relationship(back_populates="activity")
     instructor_assignments: Mapped[list["InstructorAssignment"]] = relationship(
         back_populates="activity"
     )
     occurrences: Mapped[list["Occurrence"]] = relationship(back_populates="activity")
+    flyers: Mapped[list["Flyer"]] = relationship(
+        secondary=flyer_activities, back_populates="activities"
+    )
 
 
 class Occurrence(Base, TimestampMixin):
@@ -188,12 +229,6 @@ class MarketingStats(Base, TimestampMixin):
     page_views: Mapped[int] = mapped_column(Integer, default=0)
     register_clicks: Mapped[int] = mapped_column(Integer, default=0)
     reference: Mapped[str | None] = mapped_column(String(255))  # optional external reference ID
-
-    # Relationships
-
-    flyers: Mapped[list["Flyer"]] = relationship(
-        secondary=flyer_activities, back_populates="activities"
-    )
 
 
 class Registration(Base, TimestampMixin):
@@ -235,7 +270,7 @@ class RSVP(Base, TimestampMixin):
 
     # Relationships
     registration: Mapped["Registration"] = relationship(back_populates="rsvps")
-    event: Mapped["Activity"] = relationship(back_populates="rsvps")
+    activity: Mapped["Activity"] = relationship(back_populates="rsvps")
     visitor: Mapped["Visitor"] = relationship(
         back_populates="rsvps", foreign_keys=[visitor_id]
     )
