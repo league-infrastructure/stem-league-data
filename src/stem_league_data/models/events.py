@@ -138,40 +138,123 @@ class RRule:
     This is a composite value object (not a separate table) - its fields are
     embedded directly in the parent table (e.g., Activity).
 
-    Supported shapes:
+    Supported scheduling patterns:
 
-    - Single (non-recurring) events: frequency == "ONCE" (no RRULE is emitted).
-    - Weekly recurring events: frequency == "WEEKLY" and days contains 1+ weekdays.
-    - Monthly "Nth weekday" events: frequency == "MONTHLY" with exactly one
-      weekday in days and setpos indicating the Nth occurrence (e.g., 4 for
-      "4th", -1 for "last").
+    1. **MANUAL** (frequency=None): No automatic scheduling. Occurrences are
+       created manually. Use when events happen at irregular times.
 
-    Weekday numbering uses Mon=0 .. Sun=6.
+    2. **ONCE** (frequency="ONCE"): Single occurrence. The Activity's start_dt
+       defines when it happens. No recurrence rule is generated.
 
-    Notes:
-    - `count` represents RRULE COUNT (total number of occurrences). If you need
-      an UNTIL boundary, derive it from occurrences externally; storing UNTIL
-      is intentionally omitted to avoid redundancy.
+    3. **WEEKLY** (frequency="WEEKLY"): Recurring weekly on specific days.
+       - days: list of weekdays (Mon=0..Sun=6), e.g., [2, 4] for Wed/Fri
+       - interval: every N weeks (default 1)
+       - count: total number of occurrences (optional)
+
+    4. **MONTHLY** (frequency="MONTHLY"): Recurring monthly on Nth weekday.
+       - days: exactly one weekday, e.g., [1] for Tuesday
+       - setpos: which occurrence (1-5 for 1st-5th, -1 for last)
+       - interval: every N months (default 1)
+       - count: total number of occurrences (optional)
+
+    Weekday numbering: Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat=5, Sun=6
     """
+
+    # Valid frequency values
+    MANUAL = None
+    ONCE = "ONCE"
+    WEEKLY = "WEEKLY"
+    MONTHLY = "MONTHLY"
+
+    _VALID_FREQUENCIES = {None, "ONCE", "WEEKLY", "MONTHLY"}
+    _WKDAY_TOKENS = ("MO", "TU", "WE", "TH", "FR", "SA", "SU")
+    _WKDAY_NAMES = ("Monday", "Tuesday", "Wednesday", "Thursday",
+                    "Friday", "Saturday", "Sunday")
 
     def __init__(
         self,
-        frequency: str | None = "ONCE",
+        frequency: str | None = None,
         interval: int | None = 1,
         days: list[int] | None = None,
-        setpos: int | None = 0,
+        setpos: int | None = None,
         count: int | None = None,
     ):
-        self.frequency = frequency or "ONCE"
-        self.interval = interval or 1
+        self.frequency = frequency
+        self.interval = interval if interval is not None else 1
         self.days = days
-        self.setpos = setpos or 0
+        self.setpos = setpos
         self.count = count
+
+    # --- Factory methods for common patterns ---
+
+    @classmethod
+    def manual(cls) -> "RRule":
+        """Create a manual schedule (no automatic occurrence generation)."""
+        return cls(frequency=None)
+
+    @classmethod
+    def once(cls) -> "RRule":
+        """Create a single-occurrence schedule."""
+        return cls(frequency="ONCE")
+
+    @classmethod
+    def weekly(
+        cls,
+        days: list[int],
+        interval: int = 1,
+        count: int | None = None,
+    ) -> "RRule":
+        """Create a weekly recurring schedule.
+
+        Args:
+            days: Weekdays to recur on (Mon=0..Sun=6). E.g., [2, 4] for Wed/Fri.
+            interval: Every N weeks (default 1).
+            count: Total number of occurrences (optional).
+
+        Example:
+            RRule.weekly([2, 4])  # Every Wednesday and Friday
+            RRule.weekly([0], interval=2, count=10)  # Every other Monday, 10 times
+        """
+        return cls(frequency="WEEKLY", days=days, interval=interval, count=count)
+
+    @classmethod
+    def monthly_weekday(
+        cls,
+        weekday: int,
+        week: int,
+        interval: int = 1,
+        count: int | None = None,
+    ) -> "RRule":
+        """Create a monthly recurring schedule on Nth weekday.
+
+        Args:
+            weekday: Day of week (Mon=0..Sun=6).
+            week: Which week (1-5 for 1st-5th, -1 for last).
+            interval: Every N months (default 1).
+            count: Total number of occurrences (optional).
+
+        Example:
+            RRule.monthly_weekday(1, 4)  # 4th Tuesday of each month
+            RRule.monthly_weekday(5, -1)  # Last Saturday of each month
+        """
+        return cls(
+            frequency="MONTHLY",
+            days=[weekday],
+            setpos=week,
+            interval=interval,
+            count=count,
+        )
+
+    # --- Composite protocol ---
 
     def __composite_values__(self):
         return self.frequency, self.interval, self.days, self.setpos, self.count
 
     def __repr__(self):
+        if self.frequency is None:
+            return "RRule.manual()"
+        if self.frequency == "ONCE":
+            return "RRule.once()"
         return (
             f"RRule(frequency={self.frequency!r}, interval={self.interval}, "
             f"days={self.days}, setpos={self.setpos}, count={self.count})"
@@ -191,12 +274,142 @@ class RRule:
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    # --- Validation ---
+
+    def validate(self) -> list[str]:
+        """Validate the RRule and return a list of error messages.
+
+        Returns an empty list if valid.
+        """
+        errors: list[str] = []
+
+        # Check frequency
+        freq = self.frequency
+        if freq is not None:
+            freq = freq.upper() if isinstance(freq, str) else freq
+        if freq not in self._VALID_FREQUENCIES:
+            errors.append(
+                f"Invalid frequency '{self.frequency}'. "
+                f"Must be one of: None (manual), 'ONCE', 'WEEKLY', 'MONTHLY'."
+            )
+            return errors  # Can't validate further with invalid frequency
+
+        # MANUAL: all other fields should be empty/default
+        if freq is None:
+            if self.days:
+                errors.append("Manual schedule should not specify days.")
+            if self.setpos:
+                errors.append("Manual schedule should not specify setpos.")
+            if self.count:
+                errors.append("Manual schedule should not specify count.")
+            return errors
+
+        # ONCE: minimal specification
+        if freq == "ONCE":
+            if self.days:
+                errors.append("Single occurrence should not specify days.")
+            if self.setpos:
+                errors.append("Single occurrence should not specify setpos.")
+            # count is ignored for ONCE
+            return errors
+
+        # Validate interval (applies to WEEKLY and MONTHLY)
+        if self.interval is not None and self.interval < 1:
+            errors.append("Interval must be >= 1.")
+
+        # Validate days array
+        if self.days:
+            for d in self.days:
+                if not isinstance(d, int) or d < 0 or d > 6:
+                    errors.append(
+                        f"Invalid weekday {d}. Must be integer 0-6 (Mon-Sun)."
+                    )
+
+        # Validate count
+        if self.count is not None and self.count < 1:
+            errors.append("Count must be >= 1.")
+
+        # WEEKLY validation
+        if freq == "WEEKLY":
+            if not self.days:
+                errors.append(
+                    "Weekly schedule requires at least one day. "
+                    "Use days=[0] for Monday, days=[2,4] for Wed/Fri, etc."
+                )
+            if self.setpos:
+                errors.append("Weekly schedule should not specify setpos.")
+
+        # MONTHLY validation
+        if freq == "MONTHLY":
+            if not self.days or len(self.days) != 1:
+                errors.append(
+                    "Monthly schedule requires exactly one weekday. "
+                    "Use days=[1] for Tuesday, etc."
+                )
+            if not self.setpos or self.setpos == 0:
+                errors.append(
+                    "Monthly schedule requires setpos (which week). "
+                    "Use 1-5 for 1st-5th occurrence, or -1 for last."
+                )
+            elif self.setpos not in {1, 2, 3, 4, 5, -1}:
+                errors.append(
+                    f"Invalid setpos {self.setpos}. "
+                    "Must be 1-5 (1st-5th) or -1 (last)."
+                )
+
+        return errors
+
+    def is_valid(self) -> bool:
+        """Return True if the RRule is valid."""
+        return len(self.validate()) == 0
+
+    def raise_if_invalid(self) -> None:
+        """Raise ValueError if the RRule is invalid."""
+        errors = self.validate()
+        if errors:
+            raise ValueError("Invalid RRule: " + "; ".join(errors))
+
+    # --- Human-readable description ---
+
+    def describe(self) -> str:
+        """Return a human-readable description of the schedule."""
+        if self.frequency is None:
+            return "Manual scheduling (no automatic occurrences)"
+
+        if self.frequency == "ONCE":
+            return "Single occurrence"
+
+        if self.frequency == "WEEKLY":
+            day_names = [self._WKDAY_NAMES[d] for d in (self.days or [])]
+            days_str = ", ".join(day_names) if day_names else "no days specified"
+            interval_str = (
+                "every week" if self.interval == 1
+                else f"every {self.interval} weeks"
+            )
+            count_str = f" ({self.count} times)" if self.count else ""
+            return f"Weekly on {days_str}, {interval_str}{count_str}"
+
+        if self.frequency == "MONTHLY":
+            day_name = (
+                self._WKDAY_NAMES[self.days[0]] if self.days else "unspecified day"
+            )
+            week_names = {1: "1st", 2: "2nd", 3: "3rd", 4: "4th", 5: "5th", -1: "last"}
+            week_str = week_names.get(self.setpos, f"#{self.setpos}")
+            interval_str = (
+                "every month" if self.interval == 1
+                else f"every {self.interval} months"
+            )
+            count_str = f" ({self.count} times)" if self.count else ""
+            return f"{week_str} {day_name} of {interval_str}{count_str}"
+
+        return f"Unknown frequency: {self.frequency}"
+
     # --- RRULE serialization ---
 
-    _WKDAY_TOKENS = ("MO", "TU", "WE", "TH", "FR", "SA", "SU")
-
     def to_ical_rrule(self) -> str | None:
-        """Return an iCalendar RRULE line for this recurrence, or None for ONCE.
+        """Return an iCalendar RRULE string, or None for ONCE/MANUAL.
+
+        Raises ValueError if the rule is invalid.
 
         Examples:
             - WEEKLY on Wed/Fri for 6 occurrences:
@@ -204,66 +417,27 @@ class RRule:
 
             - MONTHLY on the 4th Tuesday:
               RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=TU;BYSETPOS=4
-
-        Validation is strict for the supported shapes and will raise ValueError
-        if the stored fields are inconsistent.
         """
+        self.raise_if_invalid()
 
-        freq = (self.frequency or "").upper()
+        freq = (self.frequency or "").upper() if self.frequency else None
 
-        if freq == "ONCE":
+        if freq is None or freq == "ONCE":
             return None
 
-        if freq not in {"WEEKLY", "MONTHLY"}:
-            raise ValueError(f"Unsupported frequency: {self.frequency!r}")
-
-        interval = int(self.interval or 1)
-        if interval < 1:
-            raise ValueError("interval must be >= 1")
-
-        days = list(self.days or [])
-        if freq == "WEEKLY":
-            if not days:
-                raise ValueError("WEEKLY rules require at least one weekday in days")
-            if self.setpos not in (0, None):
-                raise ValueError("WEEKLY rules must not set setpos")
-
-        if freq == "MONTHLY":
-            if len(days) != 1:
-                raise ValueError("MONTHLY rules require exactly one weekday in days")
-            if self.setpos == 0:
-                raise ValueError(
-                    "MONTHLY rules require setpos (e.g., 4 for 4th, -1 for last)"
-                )
-
-        # Validate weekday integers and map to iCal tokens
-        tokens: list[str] = []
-        for d in days:
-            if not isinstance(d, int):
-                raise ValueError("days must be a list of integers")
-            if d < 0 or d > 6:
-                raise ValueError("weekday values must be in range 0..6 (Mon..Sun)")
-            tokens.append(self._WKDAY_TOKENS[d])
-
+        interval = self.interval or 1
         parts: list[str] = [f"FREQ={freq}", f"INTERVAL={interval}"]
 
-        if tokens:
+        # Map weekdays to iCal tokens
+        if self.days:
+            tokens = [self._WKDAY_TOKENS[d] for d in self.days]
             parts.append("BYDAY=" + ",".join(tokens))
 
-        if freq == "MONTHLY":
-            parts.append(f"BYSETPOS={int(self.setpos)}")
+        if freq == "MONTHLY" and self.setpos:
+            parts.append(f"BYSETPOS={self.setpos}")
 
         if self.count is not None:
-            count_val = int(self.count)
-            if count_val < 1:
-                raise ValueError("count (COUNT) must be >= 1")
-            parts.append(f"COUNT={count_val}")
-
-        return "RRULE:" + ";".join(parts)
-
-class Activity(Base, TimestampMixin):
-    """An activity is a scheduled delivery of a service, and is specialized to 
-    a class ( fixed recuring schedule), a course (limited number of scheduled
+            parts.append(f"COUNT={self.count}")
     dates), an Event (single date), or an appointment ( Scheduled slots, but
     must be booked to actually be on a schedule)"""
 
