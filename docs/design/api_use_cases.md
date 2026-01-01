@@ -270,36 +270,43 @@ to reference existing records.
 
 ### UC-API-3.4: Generate Occurrences from Schedule
 
-**Trigger:** Internal operation when Activity has schedule fields
+**Trigger:** Internal operation when Activity has a schedule
 
 **Inputs:**
 - start_dt: First occurrence start datetime (includes time of day)
 - end_dt: Series end date (occurrences stop after this)
-- day_numbers: Which days of week [0=Mon, 6=Sun]
-- rrule: RFC 5545 recurrence rule (optional, for complex patterns)
+- schedule: RRule object defining the recurrence pattern
 
 **Logic:**
 
-**Case A: day_numbers specified (weekly pattern)**
-1. Extract time-of-day from start_dt
-2. Calculate duration from start_dt time to end_dt time (same day)
-3. Generate dates: starting from start_dt, for each day_number,
-   until end_dt date
-4. Create Occurrence for each generated date with extracted times
+**Case A: schedule is null (manual)**
+- No automatic generation; occurrences must be added manually via the request
+  or later through UC-API-3.5
 
-**Case B: rrule specified (complex pattern)**
-1. Parse RFC 5545 RRULE
-2. Generate dates according to rule, bounded by start_dt and end_dt
+**Case B: schedule.frequency == "ONCE"**
+- Create single Occurrence from start_dt to end_dt
+
+**Case C: schedule.frequency == "WEEKLY"**
+1. Extract time-of-day and duration from start_dt/end_dt
+2. For each weekday in schedule.days:
+   - Generate all matching dates from start_dt to end_dt
+   - Apply interval (every N weeks)
 3. Create Occurrence for each generated date
+4. Stop at schedule.count if specified
 
-**Case C: Neither specified**
-- No automatic generation; occurrences must be added manually
+**Case D: schedule.frequency == "MONTHLY"**
+1. Extract time-of-day and duration from start_dt/end_dt
+2. For each month from start_dt to end_dt:
+   - Find the Nth (setpos) occurrence of the weekday (days[0])
+   - Apply interval (every N months)
+3. Create Occurrence for each generated date
+4. Stop at schedule.count if specified
 
-**Example:**
+**Example (WEEKLY):**
 ```
 start_dt: 2026-01-15T16:00:00  (Wednesday)
 end_dt: 2026-01-31T17:30:00
-day_numbers: [2, 4]            (Wed=2, Fri=4)
+schedule: { frequency: "WEEKLY", days: [2, 4] }  (Wed=2, Fri=4)
 
 Generated Occurrences:
 - 2026-01-15 16:00-17:30 (Wed)
@@ -308,6 +315,21 @@ Generated Occurrences:
 - 2026-01-24 16:00-17:30 (Fri)
 - 2026-01-29 16:00-17:30 (Wed)
 - 2026-01-31 16:00-17:30 (Fri)
+```
+
+**Example (MONTHLY):**
+```
+start_dt: 2026-01-01T14:00:00
+end_dt: 2026-06-30T16:00:00
+schedule: { frequency: "MONTHLY", days: [1], setpos: 4 }  (4th Tuesday)
+
+Generated Occurrences:
+- 2026-01-28 14:00-16:00 (4th Tue of Jan)
+- 2026-02-25 14:00-16:00 (4th Tue of Feb)
+- 2026-03-25 14:00-16:00 (4th Tue of Mar)
+- 2026-04-22 14:00-16:00 (4th Tue of Apr)
+- 2026-05-27 14:00-16:00 (4th Tue of May)
+- 2026-06-23 14:00-16:00 (4th Tue of Jun)
 ```
 
 ---
