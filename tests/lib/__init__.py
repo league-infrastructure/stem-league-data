@@ -16,12 +16,20 @@ from tests.lib.database import (
     JSONEncoder,
     json_decoder_hook,
 )
+from tests.lib.api_client import (
+    TestDatabaseManager,
+    create_test_engine,
+    create_test_session_factory,
+    get_test_client,
+)
 
 __all__ = [
+    # Workspace utilities
     "find_workspace_root",
     "get_test_data_dir",
     "get_test_dump_dir",
     "get_test_bin_dir",
+    # Database utilities
     "create_sqlite_engine",
     "create_session",
     "dump_database_to_json",
@@ -30,4 +38,9 @@ __all__ = [
     "format_comparison_report",
     "JSONEncoder",
     "json_decoder_hook",
+    # API test client utilities
+    "TestDatabaseManager",
+    "create_test_engine",
+    "create_test_session_factory",
+    "get_test_client",
 ]
