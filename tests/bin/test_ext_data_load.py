@@ -189,6 +189,32 @@ class TestLoadMetro:
         assert metro.name == "San Diego"
 
 
+class TestLoadOrg:
+    """Test loading organization data."""
+    
+    def test_load_org(self, session):
+        """Create 'The League of Amazing Programmers' organization."""
+        metro = session.query(Metro).filter_by(slug="san-diego").first()
+        assert metro is not None, "Metro must exist before creating org"
+        
+        org = Org(
+            name="The League of Amazing Programmers",
+            org_type="nonprofit",
+            website="https://www.jointheleague.org",
+            contact_email="info@jointheleague.org",
+            can_deliver_events=True,
+            can_host_events=True,
+            metro_id=metro.id,
+        )
+        session.add(org)
+        session.commit()
+        
+        assert org.id is not None
+        assert org.name == "The League of Amazing Programmers"
+        assert org.can_deliver_events is True
+        assert org.can_host_events is True
+
+
 class TestLoadPike13Locations:
     """Test loading Pike13 locations into P13Location."""
     
@@ -297,8 +323,9 @@ class TestLoadVenuesFromP13Locations:
     """Test loading venues from Pike13 locations."""
     
     def test_load_venues_from_p13_locations(self, session):
-        """Load Venue records from P13Location data."""
+        """Load Venue records from P13Location data, linked to the League org."""
         metro = session.query(Metro).filter_by(slug="san-diego").first()
+        org = session.query(Org).filter_by(name="The League of Amazing Programmers").first()
         p13_locations = session.query(P13Location).all()
         
         loaded_count = 0
@@ -307,6 +334,7 @@ class TestLoadVenuesFromP13Locations:
                 name=loc.name or "Unknown",
                 address=loc.address or loc.formatted_address,
                 metro_id=metro.id if metro else None,
+                org_id=org.id if org else None,
             )
             session.add(venue)
             loaded_count += 1
@@ -315,6 +343,11 @@ class TestLoadVenuesFromP13Locations:
         
         venues = session.query(Venue).all()
         assert len(venues) == loaded_count
+        
+        # Verify venues are linked to the org
+        if org:
+            venues_with_org = session.query(Venue).filter_by(org_id=org.id).count()
+            assert venues_with_org == loaded_count, f"Expected {loaded_count} venues linked to org"
 
 
 class TestLoadStaff:
@@ -391,7 +424,7 @@ class TestLoadProgramsCategoriesTopics:
                 
                 # Create Program with content
                 program = Program(
-                    title=item.get("title", slug.replace("-", " ").title()),
+                    name=item.get("title", slug.replace("-", " ").title()),
                     slug=slug,
                     content_id=program_content.id,
                 )
@@ -434,7 +467,7 @@ class TestLoadProgramsCategoriesTopics:
         # Create Program records for any not already loaded (no content)
         for p in programs_seen:
             program = Program(
-                title=p.replace("-", " ").title(),
+                name=p.replace("-", " ").title(),
                 slug=p,
                 content_id=None,  # No content for programs only referenced by slug
             )
@@ -443,7 +476,7 @@ class TestLoadProgramsCategoriesTopics:
         # Create Category records (no content for now)
         for c in categories_seen:
             category = Category(
-                title=c.replace("-", " ").title(),
+                name=c.replace("-", " ").title(),
                 slug=c,
                 content_id=None,
             )
@@ -452,7 +485,7 @@ class TestLoadProgramsCategoriesTopics:
         # Create Topic records (no content - topics are just tags)
         for t in topics_seen:
             topic = Topic(
-                title=t.replace("-", " ").title(),
+                name=t.replace("-", " ").title(),
                 slug=t.lower().replace(" ", "-"),
                 content_id=None,
             )
@@ -740,6 +773,9 @@ class TestLoadServicesAndActivitiesFromContent:
         if not venue:
             pytest.skip("No venue available for activities")
         
+        # Get the League org for activities
+        org = session.query(Org).filter_by(name="The League of Amazing Programmers").first()
+        
         # Track services by slug
         services_by_slug = {}
         services_created = 0
@@ -818,6 +854,7 @@ class TestLoadServicesAndActivitiesFromContent:
                 service_id=service.id if service else None,
                 content_id=activity_content.id,
                 venue_id=venue.id,
+                org_id=org.id if org else None,
                 enrollment_closes=parse_datetime(item.get("enrollment_closes")),
                 schedule_link=item.get("enroll_link"),
                 active=item.get("active", True),
@@ -872,6 +909,12 @@ class TestLoadServicesAndActivitiesFromContent:
         # Verify pike13_service_id is linked
         services_with_pike13 = [s for s in services if s.pike13_service_id is not None]
         print(f"Services linked to Pike13: {len(services_with_pike13)}")
+        
+        # Verify activities are linked to the org
+        if org:
+            activities_with_org = session.query(Activity).filter_by(org_id=org.id).count()
+            print(f"Activities linked to org: {activities_with_org}")
+            assert activities_with_org == activities_created, f"Expected all {activities_created} activities linked to org"
 
 
 class TestLoadOccurrences:
@@ -943,6 +986,7 @@ class TestDataIntegrity:
         """Test that reasonable amounts of data were loaded."""
         counts = {
             "Metro": session.query(Metro).count(),
+            "Org": session.query(Org).count(),
             "Venue": session.query(Venue).count(),
             "Person": session.query(Person).count(),
             "Staff": session.query(Staff).count(),
@@ -964,6 +1008,7 @@ class TestDataIntegrity:
         
         # Verify we have data in key tables
         assert counts["Metro"] >= 1
+        assert counts["Org"] >= 1, "Expected at least 1 org (The League of Amazing Programmers)"
         assert counts["Venue"] >= 1
         assert counts["Person"] >= 1
         assert counts["Pike13Service"] >= 1
@@ -973,6 +1018,19 @@ class TestDataIntegrity:
         assert counts["Topic"] >= 1
         assert counts["Service"] >= 1
         assert counts["Activity"] >= 1
+        
+        # Verify the League org exists and has linked data
+        league_org = session.query(Org).filter_by(name="The League of Amazing Programmers").first()
+        assert league_org is not None, "The League of Amazing Programmers org should exist"
+        
+        # Verify venues and activities are linked to the org
+        venues_with_org = session.query(Venue).filter_by(org_id=league_org.id).count()
+        activities_with_org = session.query(Activity).filter_by(org_id=league_org.id).count()
+        print(f"\nVenues linked to League org: {venues_with_org}")
+        print(f"Activities linked to League org: {activities_with_org}")
+        
+        assert venues_with_org > 0, "Expected venues linked to the League org"
+        assert activities_with_org > 0, "Expected activities linked to the League org"
         
         # Verify activities have taxonomy links
         activities_with_programs = session.query(Activity).filter(Activity.programs.any()).count()
