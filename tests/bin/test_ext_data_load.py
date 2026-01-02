@@ -68,6 +68,7 @@ from stem_league_data.models import (
     Pike13Service,
     P13Location,
 )
+from stem_league_data.models.events import RRule
 
 
 # Path to test data
@@ -371,18 +372,47 @@ class TestLoadProgramsCategoriesTopics:
         
         content_data = load_json(content_file)
         
-        # Extract unique programs, categories, and topics
+        # First, load Programs from _class: "Program" entries (they have content)
+        programs_loaded = {}
+        for item in content_data:
+            if item.get("_class") == "Program":
+                slug = item.get("slug")
+                if not slug or slug in programs_loaded:
+                    continue
+                
+                # Create Content for the program
+                program_content = Content(
+                    title=item.get("title", slug.replace("-", " ").title()),
+                    blurb=item.get("blurb"),
+                    description=item.get("description"),
+                )
+                session.add(program_content)
+                session.flush()
+                
+                # Create Program with content
+                program = Program(
+                    title=item.get("title", slug.replace("-", " ").title()),
+                    slug=slug,
+                    content_id=program_content.id,
+                )
+                session.add(program)
+                programs_loaded[slug] = program
+        
+        # Extract unique programs, categories, and topics from Class entries
         programs_seen = set()
         categories_seen = set()
         topics_seen = set()
         
         for item in content_data:
+            if item.get("_class") != "Class":
+                continue
+                
             # Programs
             programs = item.get("programs", [])
             if isinstance(programs, str):
                 programs = [programs]
             for p in programs:
-                if p:
+                if p and p not in programs_loaded:
                     programs_seen.add(p)
             
             # Categories
@@ -401,27 +431,30 @@ class TestLoadProgramsCategoriesTopics:
                 if t:
                     topics_seen.add(t.strip())
         
-        # Create Program records
+        # Create Program records for any not already loaded (no content)
         for p in programs_seen:
             program = Program(
                 title=p.replace("-", " ").title(),
                 slug=p,
+                content_id=None,  # No content for programs only referenced by slug
             )
             session.add(program)
         
-        # Create Category records
+        # Create Category records (no content for now)
         for c in categories_seen:
             category = Category(
                 title=c.replace("-", " ").title(),
                 slug=c,
+                content_id=None,
             )
             session.add(category)
         
-        # Create Topic records (Group subtype, not Tags)
+        # Create Topic records (no content - topics are just tags)
         for t in topics_seen:
             topic = Topic(
                 title=t.replace("-", " ").title(),
                 slug=t.lower().replace(" ", "-"),
+                content_id=None,
             )
             session.add(topic)
         
@@ -431,11 +464,17 @@ class TestLoadProgramsCategoriesTopics:
         categories = session.query(Category).all()
         topics = session.query(Topic).all()
         
-        print(f"\nLoaded: {len(programs)} programs, {len(categories)} categories, {len(topics)} topics")
+        # Count programs with content
+        programs_with_content = [p for p in programs if p.content_id is not None]
         
-        assert len(programs) == len(programs_seen)
+        print(f"\nLoaded: {len(programs)} programs ({len(programs_with_content)} with content), "
+              f"{len(categories)} categories, {len(topics)} topics")
+        
+        total_programs = len(programs_loaded) + len(programs_seen)
+        assert len(programs) == total_programs
         assert len(categories) == len(categories_seen)
         assert len(topics) == len(topics_seen)
+        assert len(programs_with_content) == len(programs_loaded)
 
 
 class TestLoadMeetupsFromURL:
@@ -544,6 +583,139 @@ class TestLoadAnnouncements:
         print(f"\nLoaded {loaded_count} announcements")
 
 
+class TestRRuleValidation:
+    """Test RRule composite value object validation and serialization."""
+    
+    def test_rrule_manual(self):
+        """Test manual scheduling (no automatic occurrences)."""
+        rule = RRule.manual()
+        assert rule.frequency is None
+        assert rule.is_valid()
+        assert rule.to_ical_rrule() is None
+        assert "Manual" in rule.describe()
+    
+    def test_rrule_once(self):
+        """Test single occurrence scheduling."""
+        rule = RRule.once()
+        assert rule.frequency == "ONCE"
+        assert rule.is_valid()
+        assert rule.to_ical_rrule() is None
+        assert "Single" in rule.describe()
+    
+    def test_rrule_weekly(self):
+        """Test weekly recurring schedule."""
+        # Wed/Fri
+        rule = RRule.weekly(days=[2, 4])
+        assert rule.frequency == "WEEKLY"
+        assert rule.days == [2, 4]
+        assert rule.interval == 1
+        assert rule.is_valid()
+        
+        rrule_str = rule.to_ical_rrule()
+        assert "FREQ=WEEKLY" in rrule_str
+        assert "BYDAY=WE,FR" in rrule_str
+        assert "Wednesday" in rule.describe()
+        assert "Friday" in rule.describe()
+    
+    def test_rrule_weekly_with_interval(self):
+        """Test biweekly schedule."""
+        rule = RRule.weekly(days=[0], interval=2, count=10)
+        assert rule.interval == 2
+        assert rule.count == 10
+        assert rule.is_valid()
+        
+        rrule_str = rule.to_ical_rrule()
+        assert "INTERVAL=2" in rrule_str
+        assert "COUNT=10" in rrule_str
+    
+    def test_rrule_monthly(self):
+        """Test monthly on Nth weekday schedule."""
+        # 4th Tuesday
+        rule = RRule.monthly_weekday(weekday=1, week=4)
+        assert rule.frequency == "MONTHLY"
+        assert rule.days == [1]
+        assert rule.setpos == 4
+        assert rule.is_valid()
+        
+        rrule_str = rule.to_ical_rrule()
+        assert "FREQ=MONTHLY" in rrule_str
+        assert "BYDAY=TU" in rrule_str
+        assert "BYSETPOS=4" in rrule_str
+        assert "4th" in rule.describe()
+        assert "Tuesday" in rule.describe()
+    
+    def test_rrule_monthly_last_weekday(self):
+        """Test monthly on last Saturday schedule."""
+        rule = RRule.monthly_weekday(weekday=5, week=-1)
+        assert rule.setpos == -1
+        assert rule.is_valid()
+        assert "last" in rule.describe()
+        assert "Saturday" in rule.describe()
+    
+    def test_rrule_validation_errors(self):
+        """Test that invalid RRules are detected."""
+        # Weekly without days
+        rule = RRule(frequency="WEEKLY")
+        errors = rule.validate()
+        assert len(errors) > 0
+        assert not rule.is_valid()
+        
+        # Monthly without setpos
+        rule = RRule(frequency="MONTHLY", days=[1])
+        errors = rule.validate()
+        assert len(errors) > 0
+        
+        # Monthly with multiple days
+        rule = RRule(frequency="MONTHLY", days=[1, 2], setpos=1)
+        errors = rule.validate()
+        assert len(errors) > 0
+        
+        # Invalid weekday
+        rule = RRule(frequency="WEEKLY", days=[7])
+        errors = rule.validate()
+        assert len(errors) > 0
+    
+    def test_rrule_raise_if_invalid(self):
+        """Test that raise_if_invalid raises ValueError."""
+        rule = RRule(frequency="WEEKLY")  # Missing days
+        with pytest.raises(ValueError, match="Invalid RRule"):
+            rule.raise_if_invalid()
+    
+    def test_rrule_equality(self):
+        """Test RRule equality comparison."""
+        rule1 = RRule.weekly(days=[2, 4])
+        rule2 = RRule.weekly(days=[2, 4])
+        rule3 = RRule.weekly(days=[1, 3])
+        
+        assert rule1 == rule2
+        assert rule1 != rule3
+        assert rule1 != "not an RRule"
+    
+    def test_rrule_with_dates(self):
+        """Test RRule with start_dt and end_dt."""
+        from datetime import datetime
+        
+        start = datetime(2026, 1, 15, 16, 0, 0)
+        end = datetime(2026, 3, 31, 17, 30, 0)
+        
+        rule = RRule.weekly(days=[2, 4], start_dt=start, end_dt=end)
+        assert rule.start_dt == start
+        assert rule.end_dt == end
+        assert rule.is_valid()
+        
+        # Test once with dates
+        rule_once = RRule.once(start_dt=start, end_dt=end)
+        assert rule_once.start_dt == start
+        assert rule_once.end_dt == end
+        
+        # Test monthly with dates
+        rule_monthly = RRule.monthly_weekday(
+            weekday=1, week=4, start_dt=start, end_dt=end
+        )
+        assert rule_monthly.start_dt == start
+        assert rule_monthly.end_dt == end
+
+
 class TestLoadServicesAndActivitiesFromContent:
     """Test loading Services and Activities by linking content.json Classes to Pike13."""
     
@@ -629,19 +801,28 @@ class TestLoadServicesAndActivitiesFromContent:
             session.add(activity_content)
             session.flush()
             
-            # Create Activity
+            # Determine schedule from day_numbers if available
+            day_numbers = item.get("day_numbers", [])
+            start_dt = parse_datetime(item.get("start_date"))
+            end_dt = parse_datetime(item.get("end_date"))
+            
+            if day_numbers:
+                schedule = RRule.weekly(days=day_numbers, start_dt=start_dt, end_dt=end_dt)
+            else:
+                schedule = RRule.manual(start_dt=start_dt, end_dt=end_dt)
+            
+            # Create Activity with RRule schedule (start_dt/end_dt are in schedule)
             activity = Activity(
                 type="class",
                 status="published",
                 service_id=service.id if service else None,
                 content_id=activity_content.id,
                 venue_id=venue.id,
-                start_dt=parse_datetime(item.get("start_date")),
-                end_dt=parse_datetime(item.get("end_date")),
                 enrollment_closes=parse_datetime(item.get("enrollment_closes")),
                 schedule_link=item.get("enroll_link"),
                 active=item.get("active", True),
                 capacity=20,
+                schedule=schedule,
             )
             session.add(activity)
             session.flush()

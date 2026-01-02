@@ -158,6 +158,10 @@ class RRule:
        - count: total number of occurrences (optional)
 
     Weekday numbering: Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat=5, Sun=6
+
+    Date/time fields:
+    - start_dt: First occurrence start datetime (includes time of day)
+    - end_dt: Series end date (occurrences stop after this date)
     """
 
     # Valid frequency values
@@ -178,24 +182,41 @@ class RRule:
         days: list[int] | None = None,
         setpos: int | None = None,
         count: int | None = None,
+        start_dt: datetime | None = None,
+        end_dt: datetime | None = None,
     ):
         self.frequency = frequency
         self.interval = interval if interval is not None else 1
         self.days = days
         self.setpos = setpos
         self.count = count
+        self.start_dt = start_dt
+        self.end_dt = end_dt
 
     # --- Factory methods for common patterns ---
 
     @classmethod
-    def manual(cls) -> "RRule":
+    def manual(
+        cls,
+        start_dt: datetime | None = None,
+        end_dt: datetime | None = None,
+    ) -> "RRule":
         """Create a manual schedule (no automatic occurrence generation)."""
-        return cls(frequency=None)
+        return cls(frequency=None, start_dt=start_dt, end_dt=end_dt)
 
     @classmethod
-    def once(cls) -> "RRule":
-        """Create a single-occurrence schedule."""
-        return cls(frequency="ONCE")
+    def once(
+        cls,
+        start_dt: datetime | None = None,
+        end_dt: datetime | None = None,
+    ) -> "RRule":
+        """Create a single-occurrence schedule.
+        
+        Args:
+            start_dt: When the single occurrence starts.
+            end_dt: When the single occurrence ends.
+        """
+        return cls(frequency="ONCE", start_dt=start_dt, end_dt=end_dt)
 
     @classmethod
     def weekly(
@@ -203,6 +224,8 @@ class RRule:
         days: list[int],
         interval: int = 1,
         count: int | None = None,
+        start_dt: datetime | None = None,
+        end_dt: datetime | None = None,
     ) -> "RRule":
         """Create a weekly recurring schedule.
 
@@ -210,12 +233,17 @@ class RRule:
             days: Weekdays to recur on (Mon=0..Sun=6). E.g., [2, 4] for Wed/Fri.
             interval: Every N weeks (default 1).
             count: Total number of occurrences (optional).
+            start_dt: First occurrence start datetime.
+            end_dt: Series end date (occurrences stop after this).
 
         Example:
             RRule.weekly([2, 4])  # Every Wednesday and Friday
             RRule.weekly([0], interval=2, count=10)  # Every other Monday, 10 times
         """
-        return cls(frequency="WEEKLY", days=days, interval=interval, count=count)
+        return cls(
+            frequency="WEEKLY", days=days, interval=interval, count=count,
+            start_dt=start_dt, end_dt=end_dt,
+        )
 
     @classmethod
     def monthly_weekday(
@@ -224,6 +252,8 @@ class RRule:
         week: int,
         interval: int = 1,
         count: int | None = None,
+        start_dt: datetime | None = None,
+        end_dt: datetime | None = None,
     ) -> "RRule":
         """Create a monthly recurring schedule on Nth weekday.
 
@@ -232,6 +262,8 @@ class RRule:
             week: Which week (1-5 for 1st-5th, -1 for last).
             interval: Every N months (default 1).
             count: Total number of occurrences (optional).
+            start_dt: First occurrence start datetime.
+            end_dt: Series end date (occurrences stop after this).
 
         Example:
             RRule.monthly_weekday(1, 4)  # 4th Tuesday of each month
@@ -243,12 +275,15 @@ class RRule:
             setpos=week,
             interval=interval,
             count=count,
+            start_dt=start_dt,
+            end_dt=end_dt,
         )
 
     # --- Composite protocol ---
 
     def __composite_values__(self):
-        return self.frequency, self.interval, self.days, self.setpos, self.count
+        return (self.frequency, self.interval, self.days, self.setpos, 
+                self.count, self.start_dt, self.end_dt)
 
     def __repr__(self):
         if self.frequency is None:
@@ -257,7 +292,8 @@ class RRule:
             return "RRule.once()"
         return (
             f"RRule(frequency={self.frequency!r}, interval={self.interval}, "
-            f"days={self.days}, setpos={self.setpos}, count={self.count})"
+            f"days={self.days}, setpos={self.setpos}, count={self.count}, "
+            f"start_dt={self.start_dt!r}, end_dt={self.end_dt!r})"
         )
 
     def __eq__(self, other):
@@ -269,6 +305,8 @@ class RRule:
             and self.days == other.days
             and self.setpos == other.setpos
             and self.count == other.count
+            and self.start_dt == other.start_dt
+            and self.end_dt == other.end_dt
         )
 
     def __ne__(self, other):
@@ -438,8 +476,14 @@ class RRule:
 
         if self.count is not None:
             parts.append(f"COUNT={self.count}")
-    dates), an Event (single date), or an appointment ( Scheduled slots, but
-    must be booked to actually be on a schedule)"""
+
+        return "RRULE:" + ";".join(parts)
+
+
+class Activity(Base, TimestampMixin):
+    """An Activity is an instance of an Service that is scheduled. It can be a
+    Class (series of dates), an Event (single date), or an appointment (scheduled
+    slots, but must be booked to actually be on a schedule)."""
 
     __tablename__ = "activities"
 
@@ -456,15 +500,16 @@ class RRule:
     content: Mapped["Content | None"] = relationship(foreign_keys="[Activity.content_id]")
 
     # Schedule - embedded RRule composite (columns stored directly in activities table)
+    # RRule fields include start_dt, end_dt, frequency, interval, days, setpos, count
     start_dt: Mapped[datetime | None] = mapped_column(DateTime)
     end_dt: Mapped[datetime | None] = mapped_column(DateTime)
-    
-    # RRule fields (embedded as columns with schedule_ prefix)
+
     schedule_frequency: Mapped[str | None] = mapped_column(String(16), default="ONCE")
     schedule_interval: Mapped[int | None] = mapped_column(Integer, default=1)
     schedule_days: Mapped[list[int] | None] = mapped_column(ARRAY(Integer))
     schedule_setpos: Mapped[int | None] = mapped_column(Integer, default=0)
     schedule_count: Mapped[int | None] = mapped_column(Integer)
+
 
     schedule: Mapped[RRule | None] = composite(
         RRule,
@@ -473,6 +518,8 @@ class RRule:
         schedule_days,
         schedule_setpos,
         schedule_count,
+        start_dt,
+        end_dt,
     )
 
     # Location and sponsor

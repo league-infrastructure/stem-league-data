@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "from": null,
+    "until_date": null,
+    "content_id": 10,
+    "created_at": "2026-01-01 23:19:11",
+    "updated_at": "2026-01-01 23:19:11"
+  },
+  {
+    "id": 2,
+    "from": null,
+    "until_date": null,
+    "content_id": 11,
+    "created_at": "2026-01-01 23:19:11",
+    "updated_at": "2026-01-01 23:19:11"
+  }
+]

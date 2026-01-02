@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from stem_league_data.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
+    from stem_league_data.models.content import Content
     from stem_league_data.models.place import Org
 
 
@@ -28,16 +29,17 @@ class Group(Base, TimestampMixin):
     slug: Mapped[str] = mapped_column(String(100), nullable=False)
     group_type: Mapped[str] = mapped_column(String(50), nullable=False)  # discriminator
     
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
-    blurb: Mapped[str | None] = mapped_column(Text)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
     where: Mapped[str | None] = mapped_column(String(255))
     color: Mapped[str | None] = mapped_column(String(50))
 
-
     org_id: Mapped[int | None] = mapped_column(ForeignKey("orgs.id", ondelete="SET NULL"))
+    content_id: Mapped[int | None] = mapped_column(ForeignKey("contents.id", ondelete="SET NULL"))
 
     # Relationships
     org: Mapped["Org | None"] = relationship()
+    content: Mapped["Content | None"] = relationship()
 
     __mapper_args__ = {
         "polymorphic_on": "group_type",
