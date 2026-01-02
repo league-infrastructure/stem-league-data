@@ -9,7 +9,7 @@ sys.path.insert(0, str(project_root))
 
 import pytest
 
-from tests.lib.api_client import TestDatabaseManager
+from tests.lib.api_client import DatabaseTestManager
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def test_db():
             with test_db.session_scope() as session:
                 session.add(SomeModel(...))
     """
-    manager = TestDatabaseManager()
+    manager = DatabaseTestManager()
     manager.setup()
     yield manager
     manager.teardown()

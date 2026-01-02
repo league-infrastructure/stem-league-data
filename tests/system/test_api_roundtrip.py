@@ -25,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from stem_league_data.app import app
 from tests.lib.workspace import find_workspace_root, get_test_dump_dir
-from tests.lib.api_client import TestDatabaseManager
+from tests.lib.api_client import DatabaseTestManager
 
 
 # Find paths
@@ -91,36 +91,32 @@ ENDPOINT_MAP: dict[str, dict[str, Any]] = {
         "read_only": True,  # Groups are created through programs/tracks/etc.
     },
     # Service and activity tables  
-    # NOTE: services endpoint has a bug (tries to access org_id which doesn't exist)
-    # Skipping services for now until router is fixed
-    # "services": {
-    #     "endpoint": "/api/services",
-    #     "id_field": "id",
-    #     "skip_fields": {"id", "created_at", "updated_at"},
-    # },
-    # NOTE: activities depend on services, and occurrences depend on activities
-    # Skipping until services are fixed
-    # "activities": {
-    #     "endpoint": "/api/activities",
-    #     "id_field": "id",
-    #     "skip_fields": {"id", "created_at", "updated_at"},
-    # },
+    "services": {
+        "endpoint": "/api/services",
+        "id_field": "id",
+        "skip_fields": {"id", "created_at", "updated_at"},
+    },
+    "activities": {
+        "endpoint": "/api/activities",
+        "id_field": "id",
+        "skip_fields": {"id", "created_at", "updated_at"},
+    },
     # Event-related tables
-    # "occurrences": {
-    #     "endpoint": "/api/occurrences",
-    #     "id_field": "id",
-    #     "skip_fields": {"id", "created_at", "updated_at"},
-    # },
-    # "registrations": {
-    #     "endpoint": "/api/registrations",
-    #     "id_field": "id",
-    #     "skip_fields": {"id", "created_at", "updated_at"},
-    # },
-    # "rsvps": {
-    #     "endpoint": "/api/rsvps",
-    #     "id_field": "id",
-    #     "skip_fields": {"id", "created_at", "updated_at"},
-    # },
+    "occurrences": {
+        "endpoint": "/api/occurrences",
+        "id_field": "id",
+        "skip_fields": {"id", "created_at", "updated_at"},
+    },
+    "registrations": {
+        "endpoint": "/api/registrations",
+        "id_field": "id",
+        "skip_fields": {"id", "created_at", "updated_at"},
+    },
+    "rsvps": {
+        "endpoint": "/api/rsvps",
+        "id_field": "id",
+        "skip_fields": {"id", "created_at", "updated_at"},
+    },
     # Content-related tables
     "announcements": {
         "endpoint": "/api/announcements",
@@ -145,12 +141,11 @@ TABLE_ORDER = [
     "persons",
     "staff",
     "visitors",
-    # Skipped until services router is fixed:
-    # "services",
-    # "activities",
-    # "occurrences",
-    # "registrations",
-    # "rsvps",
+    "services",
+    "activities",
+    "occurrences",
+    "registrations",
+    "rsvps",
     "announcements",
     "flyers",
 ]
@@ -242,6 +237,42 @@ def compare_records(
         if orig_value is None and resp_value is None:
             continue
         
+        # Handle string "null" vs None
+        if orig_value == "null" and resp_value is None:
+            continue
+        
+        # Handle datetime format differences
+        # Original from dump: "2026-01-06 00:00:00.000000"
+        # API response: "2026-01-06T00:00:00"
+        if isinstance(orig_value, str) and isinstance(resp_value, str):
+            # Try parsing both as datetimes
+            try:
+                from datetime import datetime
+                # Try multiple formats for original
+                for fmt in ["%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%S.%f"]:
+                    try:
+                        orig_dt = datetime.strptime(orig_value, fmt)
+                        break
+                    except ValueError:
+                        continue
+                else:
+                    orig_dt = None
+                
+                # Try multiple formats for response
+                for fmt in ["%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M:%S.%f"]:
+                    try:
+                        resp_dt = datetime.strptime(resp_value, fmt)
+                        break
+                    except ValueError:
+                        continue
+                else:
+                    resp_dt = None
+                
+                if orig_dt and resp_dt and orig_dt == resp_dt:
+                    continue
+            except Exception:
+                pass
+        
         if orig_value != resp_value:
             differences.append(f"  {key}: expected {orig_value!r}, got {resp_value!r}")
     
@@ -254,7 +285,7 @@ class TestAPIRoundtrip:
     @pytest.fixture(autouse=True)
     def setup_test_database(self):
         """Set up test database for each test."""
-        self.db_manager = TestDatabaseManager(in_memory=True)
+        self.db_manager = DatabaseTestManager(in_memory=True)
         self.db_manager.setup()
         yield
         self.db_manager.teardown()
@@ -500,7 +531,7 @@ class TestAPIRoundtripWithDependencies:
     @pytest.fixture(autouse=True)
     def setup_test_database(self):
         """Set up test database for each test."""
-        self.db_manager = TestDatabaseManager(in_memory=True)
+        self.db_manager = DatabaseTestManager(in_memory=True)
         self.db_manager.setup()
         yield
         self.db_manager.teardown()

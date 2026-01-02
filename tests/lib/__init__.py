@@ -17,7 +17,7 @@ from tests.lib.database import (
     json_decoder_hook,
 )
 from tests.lib.api_client import (
-    TestDatabaseManager,
+    DatabaseTestManager,
     create_test_engine,
     create_test_session_factory,
     get_test_client,
@@ -39,7 +39,7 @@ __all__ = [
     "JSONEncoder",
     "json_decoder_hook",
     # API test client utilities
-    "TestDatabaseManager",
+    "DatabaseTestManager",
     "create_test_engine",
     "create_test_session_factory",
     "get_test_client",

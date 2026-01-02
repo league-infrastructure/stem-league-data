@@ -106,11 +106,11 @@ def create_test_session_factory(engine) -> sessionmaker:
     return sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-class TestDatabaseManager:
+class DatabaseTestManager:
     """Manages test database lifecycle and provides session injection.
     
     Usage:
-        manager = TestDatabaseManager()
+        manager = DatabaseTestManager()
         manager.setup()  # Creates tables
         
         # Get a test client with database injection
@@ -121,7 +121,7 @@ class TestDatabaseManager:
         manager.teardown()  # Drops tables
     
     Or use the context manager:
-        with TestDatabaseManager() as manager:
+        with DatabaseTestManager() as manager:
             with manager.get_test_client(app) as client:
                 response = client.get("/api/orgs")
     """
@@ -205,7 +205,7 @@ class TestDatabaseManager:
             # Clear dependency overrides
             app.dependency_overrides.clear()
     
-    def __enter__(self) -> "TestDatabaseManager":
+    def __enter__(self) -> "DatabaseTestManager":
         """Enter context manager - sets up tables."""
         self.setup()
         return self
@@ -219,7 +219,7 @@ def get_test_client(
     app: FastAPI,
     database_url: str | None = None,
     setup_tables: bool = True,
-) -> Generator[tuple[TestClient, TestDatabaseManager], None, None]:
+) -> Generator[tuple[TestClient, DatabaseTestManager], None, None]:
     """Convenience function to get a test client with managed database.
     
     This is a generator that yields a tuple of (client, manager) and handles
@@ -231,7 +231,7 @@ def get_test_client(
         setup_tables: Whether to create tables on setup.
     
     Yields:
-        Tuple of (TestClient, TestDatabaseManager).
+        Tuple of (TestClient, DatabaseTestManager).
     
     Example:
         def test_endpoint():
@@ -246,7 +246,7 @@ def get_test_client(
                 with db.session_scope() as session:
                     session.add(Org(name="Test Org"))
     """
-    manager = TestDatabaseManager(database_url=database_url)
+    manager = DatabaseTestManager(database_url=database_url)
     
     if setup_tables:
         manager.setup()
@@ -270,7 +270,7 @@ def pytest_test_db_fixture():
     Or define it manually in conftest.py:
         @pytest.fixture
         def test_db():
-            manager = TestDatabaseManager()
+            manager = DatabaseTestManager()
             manager.setup()
             yield manager
             manager.teardown()
@@ -279,7 +279,7 @@ def pytest_test_db_fixture():
     
     @pytest.fixture
     def test_db():
-        manager = TestDatabaseManager()
+        manager = DatabaseTestManager()
         manager.setup()
         yield manager
         manager.teardown()

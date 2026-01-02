@@ -59,13 +59,27 @@ def get_service(service_id: int, db: Session = Depends(get_db)) -> Any:
 @router.post("/services", response_model=ServiceResponse, status_code=201, tags=["services"])
 def create_service(data: ServiceCreate, db: Session = Depends(get_db)) -> Any:
     """Create a new service."""
-    # Validate org_id if provided
-    if data.org_id is not None:
-        org = db.query(Org).filter(Org.id == data.org_id).first()
-        if not org:
-            raise HTTPException(status_code=400, detail=f"Org with id {data.org_id} not found")
+    # Validate content_id if provided
+    if data.content_id is not None:
+        content = db.query(Content).filter(Content.id == data.content_id).first()
+        if not content:
+            raise HTTPException(status_code=400, detail=f"Content with id {data.content_id} not found")
     
-    service = Service(**data.model_dump())
+    # Validate parent_service_id if provided
+    if data.parent_service_id is not None:
+        parent = db.query(Service).filter(Service.id == data.parent_service_id).first()
+        if not parent:
+            raise HTTPException(status_code=400, detail=f"Parent service with id {data.parent_service_id} not found")
+    
+    # Handle inline content creation
+    service_data = data.model_dump(exclude={"content", "topic_ids", "track_ids", "category_ids", "subcategory_ids"})
+    if data.content is not None and data.content_id is None:
+        content = Content(**data.content.model_dump())
+        db.add(content)
+        db.flush()
+        service_data["content_id"] = content.id
+    
+    service = Service(**service_data)
     db.add(service)
     db.commit()
     db.refresh(service)
@@ -85,11 +99,21 @@ def update_service(
     
     update_data = data.model_dump(exclude_unset=True)
     
-    # Validate org_id if provided
-    if "org_id" in update_data and update_data["org_id"] is not None:
-        org = db.query(Org).filter(Org.id == update_data["org_id"]).first()
-        if not org:
-            raise HTTPException(status_code=400, detail=f"Org with id {update_data['org_id']} not found")
+    # Validate content_id if provided
+    if "content_id" in update_data and update_data["content_id"] is not None:
+        content = db.query(Content).filter(Content.id == update_data["content_id"]).first()
+        if not content:
+            raise HTTPException(status_code=400, detail=f"Content with id {update_data['content_id']} not found")
+    
+    # Validate parent_service_id if provided
+    if "parent_service_id" in update_data and update_data["parent_service_id"] is not None:
+        parent = db.query(Service).filter(Service.id == update_data["parent_service_id"]).first()
+        if not parent:
+            raise HTTPException(status_code=400, detail=f"Parent service with id {update_data['parent_service_id']} not found")
+    
+    # Exclude many-to-many relationship IDs from direct update
+    for key in ["topic_ids", "track_ids", "category_ids", "subcategory_ids"]:
+        update_data.pop(key, None)
     
     for field, value in update_data.items():
         setattr(service, field, value)
@@ -174,10 +198,27 @@ def create_activity(data: ActivityCreate, db: Session = Depends(get_db)) -> Any:
         if not content:
             raise HTTPException(status_code=400, detail=f"Content with id {data.content_id} not found")
     
-    # Convert schedule to dict if present
-    activity_data = data.model_dump()
-    if activity_data.get("schedule") is not None:
-        activity_data["schedule"] = activity_data["schedule"]
+    # Exclude many-to-many relationship IDs and inline objects from model_dump
+    activity_data = data.model_dump(exclude={
+        "service", "content", "schedule",
+        "program_ids", "track_ids", "category_ids", "subcategory_ids",
+        "topic_ids", "tag_ids"
+    })
+    
+    # Handle inline service creation
+    if data.service is not None and data.service_id is None:
+        service_data = data.service.model_dump(exclude={"content", "topic_ids", "track_ids", "category_ids", "subcategory_ids"})
+        service = Service(**service_data)
+        db.add(service)
+        db.flush()
+        activity_data["service_id"] = service.id
+    
+    # Handle inline content creation
+    if data.content is not None and data.content_id is None:
+        content = Content(**data.content.model_dump())
+        db.add(content)
+        db.flush()
+        activity_data["content_id"] = content.id
     
     activity = Activity(**activity_data)
     db.add(activity)
@@ -214,6 +255,10 @@ def update_activity(
         service = db.query(Service).filter(Service.id == update_data["service_id"]).first()
         if not service:
             raise HTTPException(status_code=400, detail=f"Service with id {update_data['service_id']} not found")
+    
+    # Exclude many-to-many relationship IDs from direct update
+    for key in ["program_ids", "track_ids", "category_ids", "subcategory_ids", "topic_ids", "tag_ids", "schedule"]:
+        update_data.pop(key, None)
     
     for field, value in update_data.items():
         setattr(activity, field, value)
@@ -280,11 +325,6 @@ def create_occurrence(data: OccurrenceCreate, db: Session = Depends(get_db)) -> 
         if not activity:
             raise HTTPException(status_code=400, detail=f"Activity with id {data.activity_id} not found")
     
-    if data.venue_id is not None:
-        venue = db.query(Venue).filter(Venue.id == data.venue_id).first()
-        if not venue:
-            raise HTTPException(status_code=400, detail=f"Venue with id {data.venue_id} not found")
-    
     occurrence = Occurrence(**data.model_dump())
     db.add(occurrence)
     db.commit()
@@ -310,11 +350,6 @@ def update_occurrence(
         activity = db.query(Activity).filter(Activity.id == update_data["activity_id"]).first()
         if not activity:
             raise HTTPException(status_code=400, detail=f"Activity with id {update_data['activity_id']} not found")
-    
-    if "venue_id" in update_data and update_data["venue_id"] is not None:
-        venue = db.query(Venue).filter(Venue.id == update_data["venue_id"]).first()
-        if not venue:
-            raise HTTPException(status_code=400, detail=f"Venue with id {update_data['venue_id']} not found")
     
     for field, value in update_data.items():
         setattr(occurrence, field, value)
