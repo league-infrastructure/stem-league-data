@@ -138,6 +138,90 @@ def delete_service(service_id: int, db: Session = Depends(get_db)) -> None:
 # Activity Endpoints
 # ============================================================================
 
+VALID_ACTIVITY_EXPANSIONS = {"service", "venue", "content", "cta", "enrollment", "all"}
+
+
+def _parse_expand_param(expand: str | None) -> set[str]:
+    """Parse the expand query parameter into a set of field names."""
+    if not expand:
+        return set()
+    fields = {f.strip().lower() for f in expand.split(",")}
+    if "all" in fields:
+        return VALID_ACTIVITY_EXPANSIONS - {"all"}
+    return fields & VALID_ACTIVITY_EXPANSIONS
+
+
+def _content_to_dict(content: Any) -> dict[str, Any]:
+    """Convert a Content model to a dictionary."""
+    return {
+        "id": content.id,
+        "title": content.title,
+        "blurb": content.blurb,
+        "description": content.description,
+        "for": content.for_,
+        "requirements": content.requirements,
+        "cta_text": content.cta_text,
+        "cta_url": content.cta_url,
+    }
+
+
+def _build_detailed_activity(activity: Activity, expansions: set[str], db: Session) -> dict[str, Any]:
+    """Build a detailed activity response with expanded relations."""
+    from stem_league_data.schemas.events import ActivityResponse
+    
+    # Start with base activity data
+    result = ActivityResponse.model_validate(activity).model_dump()
+    
+    # Add expanded relations
+    if "service" in expansions and activity.service_id:
+        service = activity.service or db.query(Service).filter(Service.id == activity.service_id).first()
+        if service:
+            service_data = {
+                "id": service.id,
+                "slug": service.slug,
+                "grade": service.grade,
+                "level": service.level,
+                "content": None,
+            }
+            # Also expand service's content if available
+            if service.content_id:
+                svc_content = service.content or db.query(Content).filter(Content.id == service.content_id).first()
+                if svc_content:
+                    service_data["content"] = _content_to_dict(svc_content)
+            result["service"] = service_data
+    
+    if "venue" in expansions and activity.venue_id:
+        venue = activity.venue or db.query(Venue).filter(Venue.id == activity.venue_id).first()
+        if venue:
+            result["venue"] = {
+                "id": venue.id,
+                "name": venue.name,
+                "address": venue.address,
+                "city": venue.city,
+                "state": venue.state,
+                "zip_code": venue.zip_code,
+                "capacity": venue.capacity,
+                "has_computers": venue.has_computers,
+            }
+    
+    if "content" in expansions and activity.content_id:
+        content = activity.content or db.query(Content).filter(Content.id == activity.content_id).first()
+        if content:
+            result["content"] = _content_to_dict(content)
+    
+    if "cta" in expansions and activity.cta_id:
+        cta = activity.cta or db.query(Content).filter(Content.id == activity.cta_id).first()
+        if cta:
+            result["cta"] = _content_to_dict(cta)
+    
+    if "enrollment" in expansions and activity.enrollment_id:
+        enrollment = activity.enrollment or db.query(Content).filter(Content.id == activity.enrollment_id).first()
+        if enrollment:
+            result["enrollment"] = _content_to_dict(enrollment)
+    
+    return result
+
+
 @router.get("/activities", response_model=list[ActivityResponse], tags=["activities"])
 def list_activities(
     skip: int = Query(0, ge=0),
@@ -145,9 +229,14 @@ def list_activities(
     org_id: int | None = None,
     venue_id: int | None = None,
     service_id: int | None = None,
+    expand: str | None = Query(None, description="Comma-separated relations to expand: service, venue, content, cta, enrollment, or 'all'"),
     db: Session = Depends(get_db),
-) -> list[Any]:
-    """List all activities with pagination and optional filters."""
+) -> Any:
+    """List all activities with pagination and optional filters.
+    
+    Use the `expand` parameter to include related objects in the response.
+    Example: ?expand=service,venue or ?expand=all
+    """
     query = db.query(Activity)
     if org_id is not None:
         query = query.filter(Activity.org_id == org_id)
@@ -155,7 +244,14 @@ def list_activities(
         query = query.filter(Activity.venue_id == venue_id)
     if service_id is not None:
         query = query.filter(Activity.service_id == service_id)
-    return query.offset(skip).limit(limit).all()
+    
+    activities = query.offset(skip).limit(limit).all()
+    
+    expansions = _parse_expand_param(expand)
+    if expansions:
+        return [_build_detailed_activity(a, expansions, db) for a in activities]
+    
+    return activities
 
 
 @router.get("/activities/count", tags=["activities"])
@@ -165,12 +261,25 @@ def count_activities(db: Session = Depends(get_db)) -> dict[str, int]:
     return {"count": count}
 
 
-@router.get("/activities/{activity_id}", response_model=ActivityResponse, tags=["activities"])
-def get_activity(activity_id: int, db: Session = Depends(get_db)) -> Any:
-    """Get a single activity by ID."""
+@router.get("/activities/{activity_id}", tags=["activities"])
+def get_activity(
+    activity_id: int,
+    expand: str | None = Query(None, description="Comma-separated relations to expand: service, venue, content, cta, enrollment, or 'all'"),
+    db: Session = Depends(get_db),
+) -> Any:
+    """Get a single activity by ID.
+    
+    Use the `expand` parameter to include related objects in the response.
+    Example: ?expand=service,venue,content or ?expand=all
+    """
     activity = db.query(Activity).filter(Activity.id == activity_id).first()
     if not activity:
         raise HTTPException(status_code=404, detail="Activity not found")
+    
+    expansions = _parse_expand_param(expand)
+    if expansions:
+        return _build_detailed_activity(activity, expansions, db)
+    
     return activity
 
 
