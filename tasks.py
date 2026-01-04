@@ -101,118 +101,224 @@ def db_revision(c: Context, message: str = ""):
 
 
 @task
-def encrypt(c: Context):
-    """Encrypt all files in secrets/ directory."""
-    secrets_dir = Path(__file__).parent / "secrets"
-    if not secrets_dir.exists():
-        print(f"Error: secrets directory not found at {secrets_dir}")
+def secrets_edit(c: Context, deployment: str | None = None):
+    """Edit encrypted secrets file with SOPS + age.
+    
+    Usage: inv secrets-edit dev
+           inv secrets-edit prod
+    
+    Opens secrets/<deployment>.env in your editor (SOPS handles encryption/decryption).
+    The plaintext never touches disk outside the editor.
+    
+    See: https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age
+    """
+    if not deployment:
+        print("Error: deployment name required")
+        print("Usage: inv secrets-edit dev")
+        print("       inv secrets-edit prod")
         sys.exit(1)
     
-    # Use Python in the project venv to run encryption
-    python_exe = VENV_PATH / "bin" / "python"
-    script = """
-from cryptography.fernet import Fernet
-from pathlib import Path
-
-secrets_dir = Path.cwd() / "secrets"
-key_file = secrets_dir / ".key"
-
-if key_file.exists():
-    with open(key_file, "rb") as f:
-        key = f.read()
-else:
-    key = Fernet.generate_key()
-    with open(key_file, "wb") as f:
-        f.write(key)
-    print(f"Generated new encryption key: {key_file}")
-    print("⚠️  SAVE THIS KEY SAFELY - you'll need it to decrypt!")
-
-cipher = Fernet(key)
-
-encrypted_count = 0
-for env_file in sorted(secrets_dir.glob("*.env")):
-    if env_file.name == ".env":
-        continue
+    secrets_dir = Path(__file__).parent / "secrets"
+    secrets_file = secrets_dir / f"{deployment}.env"
     
-    with open(env_file, "rb") as f:
-        plaintext = f.read()
+    if not secrets_file.exists():
+        print(f"Error: secrets file not found: {secrets_file}")
+        print(f"\nAvailable templates:")
+        for f in secrets_dir.glob("*.env.example"):
+            print(f"  - {f.name}")
+        sys.exit(1)
     
-    ciphertext = cipher.encrypt(plaintext)
-    encrypted_file = env_file.with_suffix(".env.encrypted")
+    # Check if sops is installed
+    try:
+        subprocess.run(["which", "sops"], capture_output=True, check=True)
+    except subprocess.CalledProcessError:
+        print("Error: sops not installed")
+        print("Install with: brew install sops")
+        print("See: https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age")
+        sys.exit(1)
     
-    with open(encrypted_file, "wb") as f:
-        f.write(ciphertext)
-    
-    print(f"✓ Encrypted: {env_file.name} → {encrypted_file.name}")
-    encrypted_count += 1
-
-if encrypted_count == 0:
-    print("No .env files found to encrypt in secrets/")
-else:
-    print(f"\\n✓ Encrypted {encrypted_count} file(s)")
-    print(f"Key stored in: {key_file}")
-"""
-    
-    cmd = [str(python_exe), "-c", script]
-    env = os.environ.copy()
-    result = subprocess.run(cmd, cwd=Path(__file__).parent, env=env)
+    # Open the encrypted file in the default editor (SOPS handles encryption/decryption)
+    result = subprocess.run(["sops", str(secrets_file)])
     sys.exit(result.returncode)
 
 
 @task
-def decrypt(c: Context, name: str):
-    """Decrypt a secrets file to .env.
+def decrypt(c: Context, deployment: str | None = None):
+    """Decrypt secrets file to .env for local development.
     
-    Usage: inv decrypt dev
-    This will decrypt secrets/dev.env.encrypted to .env
+    Usage: inv secrets-decrypt dev
+           inv secrets-decrypt prod
+    
+    This will decrypt secrets/<deployment>.env and write to .env (which is gitignored).
+    
+    See: https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age
     """
-    secrets_dir = Path(__file__).parent / "secrets"
-    key_file = secrets_dir / ".key"
-    
-    if not key_file.exists():
-        print(f"Error: encryption key not found at {key_file}")
+    if not deployment:
+        print("Error: deployment name required")
+        print("Usage: inv secrets-decrypt dev")
+        print("       inv secrets-decrypt prod")
         sys.exit(1)
     
-    # Use Python in the project venv to run decryption
-    python_exe = VENV_PATH / "bin" / "python"
-    script = f"""
-from cryptography.fernet import Fernet, InvalidToken
-from pathlib import Path
-
-secrets_dir = Path.cwd() / "secrets"
-key_file = secrets_dir / ".key"
-
-with open(key_file, "rb") as f:
-    key = f.read()
-
-cipher = Fernet(key)
-
-encrypted_file = secrets_dir / "{name}.env.encrypted"
-if not encrypted_file.exists():
-    print(f"Error: encrypted file not found: {{encrypted_file}}")
-    print(f"Available files in {{secrets_dir}}:")
-    for f in secrets_dir.glob("*.env.encrypted"):
-        print(f"  - {{f.name}}")
-    exit(1)
-
-try:
-    with open(encrypted_file, "rb") as f:
-        ciphertext = f.read()
+    secrets_dir = Path(__file__).parent / "secrets"
+    secrets_file = secrets_dir / f"{deployment}.env"
+    env_file = Path(__file__).parent / ".env"
     
-    plaintext = cipher.decrypt(ciphertext)
+    if not secrets_file.exists():
+        print(f"Error: secrets file not found: {secrets_file}")
+        print(f"\nAvailable templates:")
+        for f in secrets_dir.glob("*.env.example"):
+            print(f"  - {f.name}")
+        sys.exit(1)
     
-    env_file = Path.cwd() / ".env"
-    with open(env_file, "wb") as f:
-        f.write(plaintext)
+    # Check if sops is installed
+    try:
+        subprocess.run(["which", "sops"], capture_output=True, check=True)
+    except subprocess.CalledProcessError:
+        print("Error: sops not installed")
+        print("Install with: brew install sops")
+        print("See: https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age")
+        sys.exit(1)
     
-    print(f"✓ Decrypted: {{encrypted_file.name}} → .env")
-except InvalidToken:
-    print(f"Error: failed to decrypt {{encrypted_file.name}}")
-    print("The encryption key may be incorrect or the file is corrupted")
-    exit(1)
-"""
+    try:
+        result = subprocess.run(
+            ["sops", "-d", str(secrets_file)],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        
+        with open(env_file, "w") as f:
+            f.write(result.stdout)
+        
+        print(f"✓ Decrypted: {secrets_file.name} → .env")
+        print(f"  Make sure .env is in .gitignore (it should be)")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Failed to decrypt {secrets_file.name}")
+        print(f"STDERR: {e.stderr}")
+        print("Make sure you have the age key at ~/.config/sops/age/keys.txt")
+        sys.exit(1)
+
+
+@task
+def encrypt(c: Context):
+    """Encrypt secrets file using DEPLOYMENT from .env.
     
-    cmd = [str(python_exe), "-c", script]
-    env = os.environ.copy()
-    result = subprocess.run(cmd, cwd=Path(__file__).parent, env=env)
-    sys.exit(result.returncode)
+    Reads DEPLOYMENT variable from .env to determine which file to encrypt.
+    Example: if DEPLOYMENT=dev in .env, encrypts secrets/dev.env
+    
+    Usage: inv encrypt
+    
+    This workflow:
+    1. Decrypts secrets/<deployment>.env to plaintext
+    2. Copies plaintext from .env
+    3. Re-encrypts to secrets/<deployment>.env
+    
+    For editing encrypted files directly, use: inv secrets-edit <deployment>
+    
+    See: https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age
+    """
+    env_file = Path(__file__).parent / ".env"
+    
+    if not env_file.exists():
+        print(f"Error: .env file not found at {env_file}")
+        print("First, decrypt your secrets: inv secrets-decrypt <deployment>")
+        sys.exit(1)
+    
+    # Read DEPLOYMENT from .env
+    deployment = None
+    try:
+        with open(env_file) as f:
+            for line in f:
+                if line.startswith("DEPLOYMENT="):
+                    deployment = line.split("=", 1)[1].strip()
+                    break
+    except Exception as e:
+        print(f"Error reading .env: {e}")
+        sys.exit(1)
+    
+    if not deployment:
+        print("Error: DEPLOYMENT variable not found in .env")
+        print("Add a line like: DEPLOYMENT=dev")
+        sys.exit(1)
+    
+    secrets_dir = Path(__file__).parent / "secrets"
+    secrets_file = secrets_dir / f"{deployment}.env"
+    
+    if not secrets_file.exists():
+        print(f"Error: file not found: {secrets_file}")
+        sys.exit(1)
+    
+    # Check if sops is installed
+    try:
+        subprocess.run(["which", "sops"], capture_output=True, check=True)
+    except subprocess.CalledProcessError:
+        print("Error: sops not installed")
+        print("Install with: brew install sops")
+        print("See: https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age")
+        sys.exit(1)
+    
+    try:
+        # Read plaintext from .env
+        with open(env_file, "r") as f:
+            plaintext_content = f.read()
+        
+        # Write plaintext to secrets file temporarily
+        with open(secrets_file, "w") as f:
+            f.write(plaintext_content)
+        
+        # Encrypt in place
+        subprocess.run(
+            ["sops", "-e", "-i", str(secrets_file)],
+            check=True,
+        )
+        print(f"✓ Encrypted: {secrets_file.name} (using DEPLOYMENT={deployment})")
+        print(f"  Updated secrets/{deployment}.env from .env")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Failed to encrypt {secrets_file.name}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+
+@task
+def updatekeys(c: Context, deployment: str | None = None):
+    """Re-encrypt secrets file with updated age keys.
+    
+    Usage: inv secrets-updatekeys dev
+           inv secrets-updatekeys prod
+    
+    Run this when the .sops.yaml has been updated with new developer keys.
+    
+    See: https://github.com/league-infrastructure/league-infrastructure/wiki/Repository-Secrets-with-SOPS---age#5-revoking-access
+    """
+    if not deployment:
+        print("Error: deployment name required")
+        print("Usage: inv secrets-updatekeys dev")
+        print("       inv secrets-updatekeys prod")
+        sys.exit(1)
+    
+    secrets_dir = Path(__file__).parent / "secrets"
+    secrets_file = secrets_dir / f"{deployment}.env"
+    
+    if not secrets_file.exists():
+        print(f"Error: file not found: {secrets_file}")
+        sys.exit(1)
+    
+    # Check if sops is installed
+    try:
+        subprocess.run(["which", "sops"], capture_output=True, check=True)
+    except subprocess.CalledProcessError:
+        print("Error: sops not installed")
+        print("Install with: brew install sops")
+        sys.exit(1)
+    
+    try:
+        subprocess.run(
+            ["sops", "updatekeys", str(secrets_file)],
+            check=True,
+        )
+        print(f"✓ Re-encrypted: {secrets_file.name}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Failed to update keys for {secrets_file.name}")
+        sys.exit(1)

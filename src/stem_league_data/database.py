@@ -9,12 +9,10 @@ from sqlalchemy import create_engine, event, JSON, String
 from sqlalchemy.orm import Session, sessionmaker
 
 from stem_league_data.models import Base
+from stem_league_data.config import get_database_url
 
-# Database URL from environment or default to SQLite for development
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    f"sqlite:///{Path(__file__).parent.parent.parent / 'tests' / 'data' / 'test.db'}"
-)
+# Database URL from environment or defaults (with ROOT_DIR resolution)
+DATABASE_URL = get_database_url()
 
 # Determine if using SQLite
 _is_sqlite = DATABASE_URL.startswith("sqlite")
